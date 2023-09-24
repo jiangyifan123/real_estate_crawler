@@ -4,6 +4,8 @@ from datetime import datetime
 import os
 
 isDebug = True
+filepath = 'logs/debug.log'
+LOG_FORMAT = "%(asctime)s - %(levelname)s - %(message)s"
 
 def logged(msg=""):
     """
@@ -13,8 +15,6 @@ def logged(msg=""):
     they default to the function's module and name.
     """
     def decorate(fun):
-        LOG_FORMAT = "%(asctime)s - %(levelname)s - %(message)s"
-        filepath = 'logs/debug.log'
         logging.basicConfig(filename=filepath, level=logging.DEBUG, format=LOG_FORMAT)
         @wraps(fun)
         def wrapper(*args, **kwargs):
@@ -30,3 +30,7 @@ def logged(msg=""):
             return ans
         return wrapper
     return decorate
+
+def logError(msg=""):
+    logging.basicConfig(filename=filepath, level=logging.ERROR, format=LOG_FORMAT)
+    logging.error(msg)

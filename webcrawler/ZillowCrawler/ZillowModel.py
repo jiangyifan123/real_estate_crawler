@@ -7,13 +7,13 @@ import unittest
 
 @dataclass
 class PhotoInfo(JSONWizard):
-    url: str | None
+    url: Optional[str] = None
 
 
 @dataclass
 class LatLong(JSONWizard):
-    latitude: float | None
-    longitude: float | None
+    latitude: Optional[float] = None
+    longitude: Optional[float] = None
 
 
 @dataclass

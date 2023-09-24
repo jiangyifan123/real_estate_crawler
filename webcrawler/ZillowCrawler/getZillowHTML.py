@@ -6,7 +6,7 @@ import urllib
 from ProxyPool import requestWithProxy
 import traceback
 import ZillowDao
-from CustomLog import logged
+from CustomLog import logged, logError
 
 
 def getUrlByZipcode(zipcode: str, page: int) -> str:
@@ -36,7 +36,7 @@ def parseZillowHtml(content: str) -> tuple[list[ZillowModel], bool]:
         return [modelList, nextPageButton.get("aria-disabled") == "true"]
     except Exception as e:
         print(e)
-        traceback.print_exc()
+        logError(traceback.format_exc())
 
     return [modelList, True]
 
@@ -159,6 +159,7 @@ def getSuggestions(searchText: str) -> SearchResponse | None:
         return result
     except Exception as e:
         print(e)
+        logError(traceback.format_exc())
 
     return None
 
@@ -220,6 +221,7 @@ def getEstateByFuzzySearch(searchText) -> list[ZillowModel] | None:
 if __name__ == "__main__":
     pass
     # getDataByZipcode(98121)
-    modelList = getEstateByFuzzySearch("las vegas")
+    # modelList = getEstateByFuzzySearch("las vegas")
     # modelList = getEstateByFuzzySearch("98121")
-    # ZillowDao.insertModelList(modelList)
+    modelList = getEstateByFuzzySearch("seattle")
+    ZillowDao.insertModelList(modelList)

@@ -1,18 +1,18 @@
 import requests
 
-proxyPoolIP = "127.0.0.1"
-port = 5010
+proxyPoolHost = "https://proxy.andyfanfan.myds.me"
+port = 443
 #默认使用proxy跑
 use_proxy = True
 
 
 def get_proxy():
-    return requests.get("http://{}:{}/get/".format(proxyPoolIP, port)).json()
+    return requests.get("{}:{}/get/".format(proxyPoolHost, port)).json()
 
 
 def delete_proxy(proxy):
-    requests.get("http://{}:{}/delete/?proxy={}".
-                 format(proxyPoolIP, port, proxy))
+    requests.get("{}:{}/delete/?proxy={}".
+                 format(proxyPoolHost, port, proxy))
 
 
 def requestWithProxy(method, url, headers, data) -> requests.Response:
