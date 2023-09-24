@@ -5,6 +5,7 @@ import unittest
 import os
 from functools import wraps
 import traceback
+from CustomLog import logged
 
 host = "100.87.56.32"
 user = "nimbus_nova"
@@ -60,6 +61,7 @@ def fetchSql(fun):
     return decorator
 
 @fetchSql
+@logged()
 def getTables():
     return """SELECT table_name FROM information_schema.tables WHERE table_schema = 'public'"""
 
@@ -107,6 +109,7 @@ def getInsertPropertiesString(model: ZillowModel) -> str:
     return safeFormat(sql, value)
 
 @execSqls
+@logged()
 def insertModelList(modelList: list[ZillowModel]):
     if modelList is None or len(modelList) == 0:
         return []

@@ -6,6 +6,7 @@ import urllib
 from ProxyPool import requestWithProxy
 import traceback
 import ZillowDao
+from CustomLog import logged
 
 
 def getUrlByZipcode(zipcode: str, page: int) -> str:
@@ -15,7 +16,7 @@ def getUrlByZipcode(zipcode: str, page: int) -> str:
 def getUrlByCity(city: str) -> str:
     return "https://www.zillow.com/%s" % city
 
-
+@logged()
 def parseZillowHtml(content: str) -> tuple[list[ZillowModel], bool]:
     modelList = []
     soup = BeautifulSoup(content, 'lxml')
@@ -39,7 +40,7 @@ def parseZillowHtml(content: str) -> tuple[list[ZillowModel], bool]:
 
     return [modelList, True]
 
-
+@logged()
 def getDataByZipcode(zipcode, page=1) -> tuple[list[ZillowModel], bool]:
     url = getUrlByZipcode(zipcode, page)
 
@@ -67,7 +68,7 @@ def getDataByZipcode(zipcode, page=1) -> tuple[list[ZillowModel], bool]:
 
     return parseZillowHtml(response.content)
 
-
+@logged()
 def getAllDataByZipcode(zipcode) -> list[ZillowModel]:
     pMax = 20
     allModelList = []
@@ -121,7 +122,7 @@ def getSearchResult():
         with open("citySearchSample.json", "w") as f:
             f.write(data)
 
-
+@logged()
 def getSuggestions(searchText: str) -> SearchResponse | None:
     params = {
         "q": searchText,
@@ -161,7 +162,7 @@ def getSuggestions(searchText: str) -> SearchResponse | None:
 
     return None
 
-
+@logged()
 def getResultByCity(city: str, page: int = 1) -> list[ZillowModel] | None:
     url = "https://www.zillow.com/%s/%d_p" % (city, page)
     payload = {}
@@ -187,7 +188,7 @@ def getResultByCity(city: str, page: int = 1) -> list[ZillowModel] | None:
     
     return parseZillowHtml(response.content)
 
-
+@logged()
 def getAllResultByCity(city) -> list[ZillowModel] | None:
     pMax = 30
     allModelList = []
@@ -198,7 +199,7 @@ def getAllResultByCity(city) -> list[ZillowModel] | None:
             break
     return allModelList
 
-
+@logged()
 def getEstateByFuzzySearch(searchText) -> list[ZillowModel] | None:
     suggestions = getSuggestions(searchText)
     if suggestions is None or len(suggestions.results) == 0:
