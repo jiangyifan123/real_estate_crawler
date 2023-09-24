@@ -5,6 +5,7 @@ import json
 import urllib
 from ProxyPool import requestWithProxy
 import traceback
+import ZillowDao
 
 
 def getUrlByZipcode(zipcode: str, page: int) -> str:
@@ -61,6 +62,7 @@ def getDataByZipcode(zipcode, page=1) -> tuple[list[ZillowModel], bool]:
 
     response = requestWithProxy("GET", url, headers=headers, data=payload)
     if response.status_code != 200:
+        print('{} status code {}'.format(url, response.status_code))
         return [[], True]
 
     return parseZillowHtml(response.content)
@@ -148,6 +150,7 @@ def getSuggestions(searchText: str) -> SearchResponse | None:
 
     response = requestWithProxy("GET", url, headers=headers, data=payload)
     if response.status_code != 200:
+        print('{} status code {}'.format(url, response.status_code))
         return None
 
     try:
@@ -179,6 +182,7 @@ def getResultByCity(city: str, page: int = 1) -> list[ZillowModel] | None:
 
     response = requestWithProxy("GET", url, headers=headers, data=payload)
     if response.status_code != 200:
+        print('{} status code {}'.format(url, response.status_code))
         return None
     
     return parseZillowHtml(response.content)
@@ -215,5 +219,6 @@ def getEstateByFuzzySearch(searchText) -> list[ZillowModel] | None:
 if __name__ == "__main__":
     pass
     # getDataByZipcode(98121)
-    # getEstateByFuzzySearch("las vegas")
-    # print(len(getEstateByFuzzySearch("98121")))
+    modelList = getEstateByFuzzySearch("las vegas")
+    # modelList = getEstateByFuzzySearch("98121")
+    # ZillowDao.insertModelList(modelList)
