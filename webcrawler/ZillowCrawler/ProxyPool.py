@@ -1,6 +1,6 @@
 import requests
 
-proxyPoolIP = "192.168.1.112"
+proxyPoolIP = "127.0.0.1"
 port = 5010
 #默认使用proxy跑
 use_proxy = True
@@ -34,3 +34,7 @@ def requestWithProxy(method, url, headers, data) -> requests.Response:
     response = requests.Response()
     response.status_code == 500
     return response
+
+if __name__ == "__main__":
+    pass
+    print(get_proxy())

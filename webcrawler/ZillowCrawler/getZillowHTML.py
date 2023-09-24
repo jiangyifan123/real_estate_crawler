@@ -200,13 +200,20 @@ def getEstateByFuzzySearch(searchText) -> list[ZillowModel] | None:
     if suggestions is None or len(suggestions.results) == 0:
         return
 
+    regionType = suggestions.results[0].metaData.regionType
     display = suggestions.results[0].display
-    cityName = ''.join(display.strip('').replace(' ', '-').lower().split(','))
-    return getAllResultByCity(cityName)
+    if regionType in ["city", "neighborhood"]:    
+        cityName = ''.join(display.strip('').replace(' ', '-').lower().split(','))
+        return getAllResultByCity(cityName)
+    elif regionType == "zipcode":
+        return getAllDataByZipcode(display)
+    elif regionType == "Address":
+        pass
+    return None
 
 
 if __name__ == "__main__":
     pass
     # getDataByZipcode(98121)
-    a = getEstateByFuzzySearch("las vegas")
-    print(len(a))
+    # getEstateByFuzzySearch("las vegas")
+    # print(len(getEstateByFuzzySearch("98121")))

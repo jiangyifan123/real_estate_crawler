@@ -72,14 +72,14 @@ class ZillowModel(JSONWizard):
 
 @dataclass
 class SearchResultMetaData(JSONWizard):
-    regionId: int | None
-    regionType: str | None
-    city: str | None
-    county: str | None
-    state: str | None
-    country: str | None
-    lat: float | None
-    lng: float | None
+    regionId: Optional[int] = None
+    regionType: Optional[str] = None
+    city: Optional[str] = None
+    county: Optional[str] = None
+    state: Optional[str] = None
+    country: Optional[str] = None
+    lat: Optional[float] = None
+    lng: Optional[float] = None
 
 
 @dataclass
