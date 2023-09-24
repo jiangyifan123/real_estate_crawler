@@ -19,7 +19,10 @@ def getConn():
                             password=password,
                             port=port)
 
-def execSql(fun):
+"""
+write a list of sqls
+"""
+def execSqls(fun):
     @wraps(fun)
     def decorator(*args, **kargs):
         conn = getConn()
@@ -36,15 +39,29 @@ def execSql(fun):
                 conn.close()
     return decorator
 
+"""
+read sql
+"""
+def fetchSql(fun):
+    @wraps(fun)
+    def decorator(*args, **kargs):
+        conn = getConn()
+        try:
+            with conn.cursor() as curs:
+                sql = fun(*args, **kargs)
+                curs.execute(sql)
+                return curs.fetchall()
+        except Exception as e:
+            print(e)
+            traceback.print_exc()
+        finally:
+            if conn:
+                conn.close()
+    return decorator
+
+@fetchSql
 def getTables():
-    tables = []
-    conn = getConn()
-    with conn.cursor() as curs:
-        curs.execute("""SELECT table_name FROM information_schema.tables WHERE table_schema = 'public'""")
-        tables = curs.fetchall()
-    if conn:
-        conn.close()
-    return tables
+    return """SELECT table_name FROM information_schema.tables WHERE table_schema = 'public'"""
 
 def safeFormat(sql: str, values: dict) -> str:
     safeValues = {k: (v or 'NULL') for k, v in values.items()}
@@ -89,7 +106,7 @@ def getInsertPropertiesString(model: ZillowModel) -> str:
     }
     return safeFormat(sql, value)
 
-@execSql
+@execSqls
 def insertModelList(modelList: list[ZillowModel]):
     if modelList is None or len(modelList) == 0:
         return []
@@ -109,6 +126,11 @@ class TestDao(unittest.TestCase):
                 conn.commit()
             if conn:
                 conn.close()
+
+    def test_getTables(self):
+        tableList = getTables()
+        # print(tableList)
+        self.assertTrue(type(tableList), list)
             
 
 if __name__ == '__main__':
