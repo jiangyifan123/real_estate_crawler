@@ -1,0 +1,4 @@
+beautifulsoup4==4.12.2
+requests==2.20.0
+lxml==4.9.2
+dataclass-wizard==0.22.2
