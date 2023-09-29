@@ -19,12 +19,12 @@ class LatLong(JSONWizard):
 @dataclass
 class HomeInfo(JSONWizard):
     zpid: int | None
-    streetAddress: str | None
-    zipcode: str | None
-    city: str | None
-    state: str | None
-    livingArea: int | None
-    homeType: str | None
+    streetAddress: Optional[str] = None
+    zipcode: Optional[str] = None
+    city: Optional[str] = None
+    state: Optional[str] = None
+    livingArea: Optional[int] = None
+    homeType: Optional[str] = None
     latitude: Optional[float] = None
     longitude: Optional[float] = None
     price: Optional[float] = None
@@ -57,11 +57,11 @@ class ZillowModel(JSONWizard):
     addressState: str | None
     addressZipcode: str | None
     countryCurrency: str | None
-    price: str | None
-    unformattedPrice: float | None
     detailUrl: str | None
-    area: int | None
-    latLong: LatLong | None
+    price: Optional[str] = None
+    unformattedPrice: Optional[float] = None
+    area: Optional[int] = None
+    latLong: Optional[LatLong] = None
     imgSrc: Optional[str] = None
     beds: Optional[int] = None
     baths: Optional[int] = None
