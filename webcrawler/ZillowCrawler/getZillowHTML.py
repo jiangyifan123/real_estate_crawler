@@ -241,6 +241,7 @@ if __name__ == "__main__":
     # getDataByZipcode(98121)
     # modelList = getEstateByFuzzySearch("las vegas")
     # modelList = getEstateByFuzzySearch("98121")
+    with open("/path/to/appdata/config/project/real-est/real_estate_crawler/webcrawler/ZillowCrawler/test.txt", "a+") as f:
+        f.write("getZillowHTML start\n")
     for city in CityList:
-        # print(checkCityExist(i))
         InsertCityData(city)
