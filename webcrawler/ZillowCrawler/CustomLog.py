@@ -34,3 +34,7 @@ def logged(msg=""):
 def logError(msg=""):
     logging.basicConfig(filename=filepath, level=logging.ERROR, format=LOG_FORMAT)
     logging.error(msg)
+
+def logDebug(msg=""):
+    logging.basicConfig(filename=filepath, level=logging.DEBUG, format=LOG_FORMAT)
+    logging.debug(msg)

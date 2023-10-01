@@ -1,12 +1,25 @@
 import requests
 from bs4 import BeautifulSoup
-from ZillowModel import ZillowModel, SearchResponse
+from Models import ZillowModel, SearchResponse
 import json
 import urllib
 from ProxyPool import requestWithProxy
 import traceback
 import ZillowDao
 from CustomLog import logged, logError
+
+CityList = [
+    "Dallas",
+    "Houston",
+    "Austin",
+    "Pittsburgh",
+    "Nashville",
+    "Lafayette",
+    "Las Vegas",
+    "Chandler",
+    "Charlotte",
+    "Atlanta",
+]
 
 
 def getUrlByZipcode(zipcode: str, page: int) -> str:
@@ -43,7 +56,6 @@ def parseZillowHtml(content: str) -> tuple[list[ZillowModel], bool]:
 @logged()
 def getDataByZipcode(zipcode, page=1) -> tuple[list[ZillowModel], bool]:
     url = getUrlByZipcode(zipcode, page)
-
     payload = {}
     headers = {
         'authority': 'www.zillow.com',
@@ -219,9 +231,16 @@ def getEstateByFuzzySearch(searchText) -> list[ZillowModel] | None:
 
 
 if __name__ == "__main__":
-    pass
+    def InsertCityData(city):
+        modelList = getEstateByFuzzySearch(city)
+        ZillowDao.insertModelList(modelList)
+    
+    def checkCityExist(city):
+        suggestions = getSuggestions(city)
+        return "{} exist:{}".format(city, suggestions is not None and len(suggestions.results) != 0)
     # getDataByZipcode(98121)
     # modelList = getEstateByFuzzySearch("las vegas")
     # modelList = getEstateByFuzzySearch("98121")
-    modelList = getEstateByFuzzySearch("seattle")
-    ZillowDao.insertModelList(modelList)
+    for city in CityList:
+        # print(checkCityExist(i))
+        InsertCityData(city)

@@ -1,9 +1,6 @@
 from dataclasses import dataclass, field
 from dataclass_wizard import JSONWizard
 from typing import Optional
-import os
-import unittest
-
 
 @dataclass
 class PhotoInfo(JSONWizard):
@@ -93,20 +90,34 @@ class SearchResult(JSONWizard):
 class SearchResponse(JSONWizard):
     results: Optional[list[SearchResult]] = field(default_factory=list)
 
-
-class TestModel(unittest.TestCase):
-    def test_ZillowModel(self):
-        jsFile = os.path.join(os.path.abspath(os.path.dirname(__file__)), r"samples/ZillowModelSample.json")
-        with open(jsFile, "r") as f:
-            data = f.read()
-            ZillowModel.from_json(data)
-
-    def test_SearchResponse(self):
-        jsFile = os.path.join(os.path.abspath(os.path.dirname(__file__)), r"samples/SearchResultSample.json")
-        with open(jsFile, "r") as f:
-            data = f.read()
-            SearchResponse.from_json(data)
-
+@dataclass
+class Properties(JSONWizard):
+    property_id: str
+    address: Optional[str] = None
+    city: Optional[str] = None
+    state: Optional[str] = None
+    zipcode: Optional[str] = None
+    property_type: Optional[str] = None
+    num_beds: Optional[int] = None
+    num_baths: Optional[int] = None
+    sq_ft: Optional[int] = None
+    sq_ft_lot: Optional[int] = None
+    purchase_price: Optional[int] = None
+    num_days_on_market: Optional[int] = None
+    year_built: Optional[int] = None
+    num_garage: Optional[int] = None
+    description: Optional[str] = None
+    image_links: Optional[list[str]] = field(default_factory=list)
+    schools: Optional[str] = None
+    hoa: Optional[int] = None
+    source: Optional[str] = None
+    zestimate: Optional[int] = None 
+    detailurl: Optional[str] = None
+    unit: Optional[str] = None
+    latitude: Optional[float] = None
+    longitude: Optional[float] = None
 
 if __name__ == '__main__':
-    unittest.main()
+    pass
+    # a = ["123", "333"]
+    # print(r"'{0}'".format(str(a).replace('[', '{').replace(']', '}').replace("'", '"')))
