@@ -1,9 +1,8 @@
 from dataclasses import asdict
+from dataclass_wizard import JSONWizard
+from BaseDecorator import fetchSql, execSqls
 
-class ModelSqlsUtls(object):
-    def __init__(self, model):
-      self.__model = model
-
+class CustomJSONWizard(JSONWizard):
     def __toSqlDict(self) -> dict:
       def handleValues(v):
           if v is None:
@@ -14,22 +13,35 @@ class ModelSqlsUtls(object):
               quote = "'" if isinstance(v, str) else "",
               value = str(v)
           )
-      return {k: handleValues(v).strip() for k, v in asdict(self.__model).items()}
+      return {k: handleValues(v).strip() for k, v in asdict(self).items() if self.canHandle(k)}
     
-    def getInsertSql(self, tableName):
+    def getInsertSql(self):
       sqlDict = self.__toSqlDict()
       return """INSERT INTO "{tableName}"{keys} values{values};""".format(
-          tableName = tableName,
+          tableName = self.tableName(),
           keys = "({})".format(",".join(sqlDict.keys())),
           values = "({})".format(",".join(sqlDict.values())),
       )
     
-    def getInsertWithoutDulplicateSql(self, tableName, dulKeyList):
+    def getInsertWithoutDulplicateSql(self, dulKeyList):
       sqlDict = self.__toSqlDict()
       return """INSERT INTO {tableName} {keys} SELECT {values} WHERE NOT EXISTS (SELECT {dulKeyList} from {tableName} where ({where_condition}));""".format(
-          tableName = '"{}"'.format(tableName),
+          tableName = '"{}"'.format(self.tableName()),
           keys = "({})".format(",".join(sqlDict.keys())),
           values = "{}".format(",".join(sqlDict.values())),
           dulKeyList = ",".join(dulKeyList),
           where_condition = " OR ".join(["{}={}".format(dulKey, sqlDict.get(dulKey, 'NULL')) for dulKey in dulKeyList])
       )
+    
+    @classmethod
+    def tableName(self):
+      return ""
+
+    @classmethod
+    @fetchSql
+    def getDataSet(self):
+      return """SELECT * FROM "{}";""".format(self.tableName()) 
+
+    @classmethod
+    def canHandle(self, k):
+      return True

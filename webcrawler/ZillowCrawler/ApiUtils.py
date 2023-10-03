@@ -6,21 +6,7 @@ import urllib
 from ProxyPool import requestWithProxy
 import traceback
 import ZillowDao
-from CustomLog import logged, logError
-
-CityList = [
-    "Dallas",
-    "Houston",
-    "Austin",
-    "Pittsburgh",
-    "Nashville",
-    "Lafayette",
-    "Las Vegas",
-    "Chandler",
-    "Charlotte",
-    "Atlanta",
-]
-
+from CustomLog import logged, logError, logDebug
 
 def getUrlByZipcode(zipcode: str, page: int) -> str:
     return "https://www.zillow.com/homes/%s_rb/%d_p/" % (zipcode, page)
@@ -89,6 +75,7 @@ def getAllDataByZipcode(zipcode) -> list[ZillowModel]:
         allModelList.extend(modelList)
         if isLastPage:
             break
+    logDebug("get data by {} result len: {}".format(zipcode, len(allModelList)))
     return allModelList
 
 
@@ -210,8 +197,10 @@ def getAllResultByCity(city) -> list[ZillowModel] | None:
         allModelList.extend(modelList)
         if isLastPage:
             break
+    logDebug("get {} result len: {}".format(city, len(allModelList)))
     return allModelList
 
+# zillo fuzzy search
 @logged()
 def getEstateByFuzzySearch(searchText) -> list[ZillowModel] | None:
     suggestions = getSuggestions(searchText)
@@ -229,19 +218,5 @@ def getEstateByFuzzySearch(searchText) -> list[ZillowModel] | None:
         pass
     return None
 
-
 if __name__ == "__main__":
-    def InsertCityData(city):
-        modelList = getEstateByFuzzySearch(city)
-        ZillowDao.insertModelList(modelList)
-    
-    def checkCityExist(city):
-        suggestions = getSuggestions(city)
-        return "{} exist:{}".format(city, suggestions is not None and len(suggestions.results) != 0)
-    # getDataByZipcode(98121)
-    # modelList = getEstateByFuzzySearch("las vegas")
-    # modelList = getEstateByFuzzySearch("98121")
-    with open("/path/to/appdata/config/project/real-est/real_estate_crawler/webcrawler/ZillowCrawler/test.txt", "a+") as f:
-        f.write("getZillowHTML start\n")
-    for city in CityList:
-        InsertCityData(city)
+    pass

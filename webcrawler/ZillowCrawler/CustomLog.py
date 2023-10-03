@@ -2,10 +2,19 @@ from functools import wraps
 import logging
 from datetime import datetime
 import os
+import traceback
 
 isDebug = True
 filepath = 'logs/debug.log'
 LOG_FORMAT = "%(asctime)s - %(levelname)s - %(message)s"
+
+def logError(msg=""):
+    logging.basicConfig(filename=filepath, level=logging.ERROR, format=LOG_FORMAT)
+    logging.error(msg)
+
+def logDebug(msg=""):
+    logging.basicConfig(filename=filepath, level=logging.DEBUG, format=LOG_FORMAT)
+    logging.debug(msg)
 
 def logged(msg=""):
     """
@@ -20,9 +29,12 @@ def logged(msg=""):
         def wrapper(*args, **kwargs):
             if isDebug: 
                 logging.debug("start {name}, msg: {msg}".format(
-                    name=fun.__name__,
+                    name=fun.__name__, 
                     msg=msg))
-            ans = fun(*args, **kwargs)
+            try:
+                ans = fun(*args, **kwargs)
+            except Exception:
+                logging.error(traceback.format_exc())
             if isDebug:
                 logging.debug("end {name}, msg: {msg}".format(
                     name=fun.__name__,
@@ -30,11 +42,3 @@ def logged(msg=""):
             return ans
         return wrapper
     return decorate
-
-def logError(msg=""):
-    logging.basicConfig(filename=filepath, level=logging.ERROR, format=LOG_FORMAT)
-    logging.error(msg)
-
-def logDebug(msg=""):
-    logging.basicConfig(filename=filepath, level=logging.DEBUG, format=LOG_FORMAT)
-    logging.debug(msg)

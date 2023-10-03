@@ -1,20 +1,20 @@
 from dataclasses import dataclass, field
-from dataclass_wizard import JSONWizard
 from typing import Optional
+from SqlUtls import CustomJSONWizard
 
 @dataclass
-class PhotoInfo(JSONWizard):
+class PhotoInfo(CustomJSONWizard):
     url: Optional[str] = None
 
 
 @dataclass
-class LatLong(JSONWizard):
+class LatLong(CustomJSONWizard):
     latitude: Optional[float] = None
     longitude: Optional[float] = None
 
 
 @dataclass
-class HomeInfo(JSONWizard):
+class HomeInfo(CustomJSONWizard):
     zpid: int | None
     streetAddress: Optional[str] = None
     zipcode: Optional[str] = None
@@ -40,12 +40,12 @@ class HomeInfo(JSONWizard):
 
 
 @dataclass
-class HdpData(JSONWizard):
+class HdpData(CustomJSONWizard):
     homeInfo: HomeInfo | None
 
 
 @dataclass
-class ZillowModel(JSONWizard):
+class ZillowModel(CustomJSONWizard):
     zpid: str | None
     statusType: str | None
     address: str | None
@@ -65,10 +65,42 @@ class ZillowModel(JSONWizard):
     zestimate: Optional[float] = None
     hdpData: Optional[HdpData] = None
     carouselPhotos: Optional[list[PhotoInfo]] = field(default_factory=list)
+    statusText: Optional[str] = None
+
+    def toProperties(self):
+        homeInfo = model.hdpData.homeInfo
+        return Models.Properties(
+            property_id = model.zpid,
+            address = homeInfo.streetAddress,
+            city = homeInfo.city,
+            state = homeInfo.state,
+            zipcode = homeInfo.zipcode,
+            property_type = homeInfo.homeType,
+            num_beds = homeInfo.bedrooms,
+            num_baths = homeInfo.bathrooms,
+            sq_ft = homeInfo.livingArea,
+            sq_ft_lot = homeInfo.livingArea,
+            purchase_price = int(homeInfo.price) if homeInfo.price is not None else homeInfo.price,
+            num_days_on_market = None,
+            year_built = None,
+            num_garage = None,
+            description = None,
+            image_links = [p.url for p in model.carouselPhotos] if model.carouselPhotos is not None else [],
+            schools = None,
+            hoa = None,
+            source = "zillow",
+            zestimate = int(homeInfo.zestimate) if homeInfo.zestimate is not None else homeInfo.zestimate,
+            detailurl = model.detailUrl,
+            unit = homeInfo.unit,
+            latitude = homeInfo.latitude,
+            longitude = homeInfo.longitude,
+            statusType = model.statusType,
+            statusText = model.statusText,
+        )
 
 
 @dataclass
-class SearchResultMetaData(JSONWizard):
+class SearchResultMetaData(CustomJSONWizard):
     regionId: Optional[int] = None
     regionType: Optional[str] = None
     city: Optional[str] = None
@@ -80,18 +112,18 @@ class SearchResultMetaData(JSONWizard):
 
 
 @dataclass
-class SearchResult(JSONWizard):
+class SearchResult(CustomJSONWizard):
     display: str | None
     resultType: str | None
     metaData: Optional[SearchResultMetaData] = None
 
 
 @dataclass
-class SearchResponse(JSONWizard):
+class SearchResponse(CustomJSONWizard):
     results: Optional[list[SearchResult]] = field(default_factory=list)
 
 @dataclass
-class Properties(JSONWizard):
+class Properties(CustomJSONWizard):
     property_id: str
     address: Optional[str] = None
     city: Optional[str] = None
@@ -116,6 +148,19 @@ class Properties(JSONWizard):
     unit: Optional[str] = None
     latitude: Optional[float] = None
     longitude: Optional[float] = None
+    id: Optional[int] = None
+    statusType: Optional[str] = None
+    statusText: Optional[str] = None
+
+    @classmethod
+    def tableName(self):
+        return 'raw.properties'
+            
+    @classmethod
+    def canHandle(self, k):
+        if str(k) == 'id':
+            return False
+        return True
 
 if __name__ == '__main__':
     pass
