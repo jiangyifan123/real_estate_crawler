@@ -33,7 +33,8 @@ def logged(msg=""):
                     msg=msg))
             try:
                 ans = fun(*args, **kwargs)
-            except Exception:
+            except Exception as e:
+                ans = e
                 logging.error(traceback.format_exc())
             if isDebug:
                 logging.debug("end {name}, msg: {msg}".format(

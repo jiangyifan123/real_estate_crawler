@@ -1,6 +1,7 @@
 from dataclasses import dataclass, field
 from typing import Optional
 from SqlUtls import CustomJSONWizard
+import hashlib
 
 @dataclass
 class PhotoInfo(CustomJSONWizard):
@@ -68,9 +69,9 @@ class ZillowModel(CustomJSONWizard):
     statusText: Optional[str] = None
 
     def toProperties(self):
-        homeInfo = model.hdpData.homeInfo
-        return Models.Properties(
-            property_id = model.zpid,
+        homeInfo = self.hdpData.homeInfo
+        return Properties(
+            property_id = self.zpid,
             address = homeInfo.streetAddress,
             city = homeInfo.city,
             state = homeInfo.state,
@@ -85,17 +86,17 @@ class ZillowModel(CustomJSONWizard):
             year_built = None,
             num_garage = None,
             description = None,
-            image_links = [p.url for p in model.carouselPhotos] if model.carouselPhotos is not None else [],
+            image_links = [p.url for p in self.carouselPhotos] if self.carouselPhotos is not None else [],
             schools = None,
             hoa = None,
             source = "zillow",
             zestimate = int(homeInfo.zestimate) if homeInfo.zestimate is not None else homeInfo.zestimate,
-            detailurl = model.detailUrl,
+            detailurl = self.detailUrl,
             unit = homeInfo.unit,
             latitude = homeInfo.latitude,
             longitude = homeInfo.longitude,
-            statusType = model.statusType,
-            statusText = model.statusText,
+            status_type = self.statusType,
+            status_text = self.statusText,
         )
 
 
@@ -149,20 +150,24 @@ class Properties(CustomJSONWizard):
     latitude: Optional[float] = None
     longitude: Optional[float] = None
     id: Optional[int] = None
-    statusType: Optional[str] = None
-    statusText: Optional[str] = None
+    status_type: Optional[str] = None
+    status_text: Optional[str] = None
 
     @classmethod
     def tableName(self):
         return 'raw.properties'
-            
+
     @classmethod
-    def canHandle(self, k):
-        if str(k) == 'id':
+    def canHandle(self, k, enterFrom):
+        if str(k) == 'id' and enterFrom == self.EnterFrom.WRITE:
             return False
         return True
+    
+    def handleValues(self, k, v):
+        if k == 'property_id':
+            s = self.address + self.city + self.state + self.zipcode + self.property_type
+            return "'{}'".format(hashlib.sha256(s.encode('utf-8')).hexdigest())
+        return super().handleValues(k, v)
 
 if __name__ == '__main__':
     pass
-    # a = ["123", "333"]
-    # print(r"'{0}'".format(str(a).replace('[', '{').replace(']', '}').replace("'", '"')))

@@ -28,8 +28,12 @@ def getModelsListFromDataset(cls):
     for datasets in cls.getDataSet():
         modelList.extend([cls(*d) for d in datasets])
     return modelList
+
+@execSqls
+def updateModel(modelList: list, where_condition: list):
+    return [model.getUpdateSql(where_condition) for model in modelList]
             
 
 if __name__ == '__main__':
     modelList = getModelsListFromDataset(Properties)
-    print(modelList[:2])
+    updateModel(modelList, ["id"])
