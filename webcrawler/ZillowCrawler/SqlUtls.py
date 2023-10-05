@@ -16,7 +16,7 @@ class CustomJSONWizard(JSONWizard):
       return r"'{0}'".format(str(v).replace('[', '{').replace(']', '}').replace("'", '"'))
     return r'{quote}{value}{quote}'.format(
       quote = "'" if isinstance(v, str) else "",
-      value = str(v)
+      value = str(v).replace(r"'", r"''") if isinstance(v, str) else str(v)
     )
 
   def _toSqlDict(self, enterFrom) -> dict:
@@ -38,6 +38,21 @@ class CustomJSONWizard(JSONWizard):
         values = "{}".format(",".join(sqlDict.values())),
         dulKeyList = ",".join(dulKeyList),
         where_condition = " OR ".join(["{}={}".format(dulKey, sqlDict.get(dulKey, 'NULL')) for dulKey in dulKeyList])
+    )
+  
+  def getUpsertSql(self, conflict):
+    sqlDict = self._toSqlDict(self.EnterFrom.WRITE)
+    return """
+INSERT INTO "{tableName}" {keys}
+VALUES {values}
+ON CONFLICT ("{conflict}")
+DO UPDATE SET {set_values};
+    """.format(
+      tableName = self.tableName(),
+      keys = "({})".format(",".join(sqlDict.keys())),
+      values = "({})".format(",".join(sqlDict.values())),
+      conflict = conflict,
+      set_values = ','.join(['"{key}"=EXCLUDED."{key}"'.format(key=k) for k in sqlDict.keys() if k != conflict]),
     )
   
   def getUpdateSql(self, conditionKeyList):

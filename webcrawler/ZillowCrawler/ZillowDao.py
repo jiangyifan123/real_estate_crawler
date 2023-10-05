@@ -1,6 +1,6 @@
 from BaseDecorator import fetchSql, execSqls
 from CustomLog import logged
-from Models import ZillowModel, Properties
+from Models import ZillowModel, Properties, ZillowDetailPage
 
 @fetchSql
 @logged()
@@ -18,6 +18,17 @@ def insertModelList(modelList: list[ZillowModel]):
     def getInsertPropertiesString(model: ZillowModel) -> str:
         properties = model.toProperties()
         sql = properties.getInsertWithoutDulplicateSql(["address", "property_id"])
+        return sql
+    if modelList is None or len(modelList) == 0:
+        return []
+    return [getInsertPropertiesString(model) for model in modelList]
+
+@execSqls
+@logged()
+def upsertModelList(modelList: list[ZillowDetailPage]):
+    def getInsertPropertiesString(model: ZillowDetailPage) -> str:
+        properties = model.toProperties()
+        sql = properties.getUpsertSql("property_id")
         return sql
     if modelList is None or len(modelList) == 0:
         return []

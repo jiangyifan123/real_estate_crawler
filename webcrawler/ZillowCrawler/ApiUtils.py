@@ -1,6 +1,6 @@
 import requests
 from bs4 import BeautifulSoup
-from Models import ZillowModel, SearchResponse
+from Models import ZillowModel, SearchResponse, ZillowDetailPage
 import json
 import urllib
 from ProxyPool import requestWithProxy
@@ -38,6 +38,33 @@ def parseZillowHtml(content: str) -> tuple[list[ZillowModel], bool]:
         logError(traceback.format_exc())
 
     return [modelList, True]
+
+@logged()
+def parseZillowDetailHtml(content: str) -> ZillowDetailPage:
+    model = None
+    soup = BeautifulSoup(content, 'lxml')
+    scripts = soup.find_all("script", {"id": "__NEXT_DATA__"})
+    if len(scripts) == 0:
+        print("parse error")
+        return model
+
+    try:
+        dataJsonString = scripts[0].text
+        data = json.loads(dataJsonString)
+        detailData = json.loads(data["props"]["pageProps"]["gdpClientCache"])
+        values = detailData.values()
+        if len(values) < 1:
+            return model
+        property = list(values)[0]["property"]
+        model = ZillowDetailPage.from_json(json.dumps(property))
+        model.num_garage = property.get("resoFacts", {}).get("garageParkingCapacity",None)
+        model.status_text = property.get("attributionInfo", {}).get("trueStatus", None)
+        return model
+    except Exception as e:
+        print(e)
+        logError(traceback.format_exc())
+    finally:
+        return model
 
 @logged()
 def getDataByZipcode(zipcode, page=1) -> tuple[list[ZillowModel], bool]:
@@ -211,12 +238,43 @@ def getEstateByFuzzySearch(searchText) -> list[ZillowModel] | None:
     display = suggestions.results[0].display
     if regionType in ["city", "neighborhood"]:    
         cityName = ''.join(display.strip('').replace(' ', '-').lower().split(','))
-        return getAllResultByCity(cityName)
+        modelList = getAllResultByCity(cityName)
+        return [getZillowDetailPage(model.detailUrl) for model in modelList]
     elif regionType == "zipcode":
-        return getAllDataByZipcode(display)
+        modelList = getAllDataByZipcode(display)
+        return [getZillowDetailPage(model.detailUrl) for model in modelList]
     elif regionType == "Address":
         pass
     return None
 
+@logged()
+def getZillowDetailPage(detailUrl):
+    payload = {}
+    headers = {
+        'authority': 'www.zillow.com',
+        'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
+        'accept-language': 'zh-CN,zh;q=0.9',
+        'cache-control': 'max-age=0',
+        'referer': 'https://www.google.com/',
+        'sec-ch-ua': '"Google Chrome";v="117", "Not;A=Brand";v="8", "Chromium";v="117"',
+        'sec-ch-ua-mobile': '?0',
+        'sec-ch-ua-platform': '"Windows"',
+        'sec-fetch-dest': 'document',
+        'sec-fetch-mode': 'navigate',
+        'sec-fetch-site': 'same-origin',
+        'sec-fetch-user': '?1',
+        'upgrade-insecure-requests': '1',
+        'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/117.0.0.0 Safari/537.36',
+    }
+    response = requestWithProxy("GET", detailUrl, headers=headers, data=payload)
+    if response.status_code != 200:
+        print('{} status code {}'.format(detailUrl, response.status_code))
+        return None
+
+    return parseZillowDetailHtml(response.content)
+
 if __name__ == "__main__":
-    pass
+    # url = "https://www.zillow.com/homedetails/79-E-Agate-Ave-UNIT-401-Las-Vegas-NV-89123/55110557_zpid/"
+    # print(getZillowDetailPage(url))
+    test = getEstateByFuzzySearch("seattle")
+    print(test[0])
