@@ -32,7 +32,7 @@ def upsertModelList(modelList: list[ZillowDetailPage]):
         return sql
     if modelList is None or len(modelList) == 0:
         return []
-    return [getInsertPropertiesString(model) for model in modelList]
+    return [getInsertPropertiesString(model) for model in modelList if model is not None]
 
 def getModelsListFromDataset(cls):
     modelList = []
@@ -42,7 +42,7 @@ def getModelsListFromDataset(cls):
 
 @execSqls
 def updateModel(modelList: list, where_condition: list):
-    return [model.getUpdateSql(where_condition) for model in modelList]
+    return [model.getUpdateSql(where_condition) for model in modelList if model is not None]
             
 
 if __name__ == '__main__':

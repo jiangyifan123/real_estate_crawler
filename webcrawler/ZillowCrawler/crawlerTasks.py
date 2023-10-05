@@ -16,9 +16,8 @@ CityList = [
 ]
 
 def crawlerTask():
-    def InsertCityData(city):
-        modelList = ApiUtils.getEstateByFuzzySearch(city)
-        # ZillowDao.insertModelList(modelList)
+    def InsertData(searchText):
+        modelList = ApiUtils.getEstateByFuzzySearch(searchText)
         ZillowDao.upsertModelList(modelList)
     
     def checkCityExist(city):
@@ -26,7 +25,7 @@ def crawlerTask():
         return "{} exist:{}".format(city, suggestions is not None and len(suggestions.results) != 0)
     
     for city in CityList:
-        InsertCityData(city)
+        InsertData(city)
 
 def crawlerTask2():
     pass
