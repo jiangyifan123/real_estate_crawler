@@ -1,26 +1,30 @@
-from dataclasses import asdict
+from dataclasses import asdict, is_dataclass
 from dataclass_wizard import JSONWizard
 from BaseDecorator import fetchSql, execSqls
 from enum import Enum
+import json
+
+def handleValues(v):
+  if v is None:
+    return "NULL"
+  if isinstance(v, list) or isinstance(v, dict):
+    return "'{}'".format(json.dumps(v).replace("[", "{").replace("]", "}"))
+  if isinstance(v, str):
+    return r"'{value}'".format(
+      value = str(v).replace(r"'", r"''")
+    )
+  return str(v)
 
 class CustomJSONWizard(JSONWizard):
   class EnterFrom(Enum):
     READ = 1
     WRITE = 2
     UPDATE = 3
-
-  def handleValues(self, k, v):
-    if v is None:
-      return "NULL"
-    if isinstance(v, list):
-      return r"'{0}'".format(str(v).replace('[', '{').replace(']', '}').replace("'", '"'))
-    return r'{quote}{value}{quote}'.format(
-      quote = "'" if isinstance(v, str) else "",
-      value = str(v).replace(r"'", r"''") if isinstance(v, str) else str(v)
-    )
+  
+  toModelDict = {}
 
   def _toSqlDict(self, enterFrom) -> dict:
-    return {k: self.handleValues(k, v).strip() for k, v in asdict(self).items() if self.canHandle(k, enterFrom)}
+    return {k: handleValues(v).strip() for k, v in asdict(self).items() if self.canHandle(k, enterFrom)}
   
   def getInsertSql(self):
     sqlDict = self._toSqlDict(self.EnterFrom.WRITE)
@@ -78,3 +82,12 @@ WHERE
   @classmethod
   def canHandle(self, k, enterFrom):
     return True
+  
+  def registerModelFactory(self, cls, fun):
+    if callable(fun):
+      self.toModelDict[cls] = fun
+  
+  def getModelFactory(self, cls):
+    def defaultFactory():
+      return None
+    return self.toModelDict.get(cls, defaultFactory)()

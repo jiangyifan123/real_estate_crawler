@@ -1,6 +1,8 @@
 import requests
 from CustomLog import logDebug
 import socket
+import time
+import random
 
 proxyPoolHost = "https://proxy.andyfanfan.myds.me"
 internal_host = "http://127.0.0.1:5010"
@@ -9,7 +11,8 @@ LocalIP = socket.gethostbyname(hostname)
 #默认使用proxy跑
 use_proxy = True
 internal = LocalIP.startswith("127.0")
-
+proxypool_url = 'http://127.0.0.1:5555/random'
+Random = random.Random()
 
 def get_proxy():
     host = internal_host if internal else proxyPoolHost
@@ -21,8 +24,24 @@ def delete_proxy(proxy):
     requests.get("{}/delete/?proxy={}".
                  format(host, proxy))
 
+def get_random_proxy():
+    """
+    get random proxy from proxypool
+    :return: proxy
+    """
+    proxy = requests.get(proxypool_url).text.strip()
+    proxies = {'http': 'http://' + proxy}
+    return proxies
 
 def requestWithProxy(method, url, headers, data) -> requests.Response:
+    stopCount = Random.randint(1, 2)
+    # time.sleep(stopCount)
+    if (stopCount % 2 == 0):
+        return requestWithProxy2(method, url, headers, data)
+    else:
+        return requestWithProxy(method, url, headers, data)
+
+def requestWithProxy1(method, url, headers, data) -> requests.Response:
     if not use_proxy:
         return requests.request(method, url, headers=headers, data=data)
     # ....
@@ -43,5 +62,13 @@ def requestWithProxy(method, url, headers, data) -> requests.Response:
     response.status_code == 500
     return response
 
-if __name__ == "__main__":
-    print(internal)
+def requestWithProxy2(method, url, headers, data) -> requests.Response:
+    proxies = get_random_proxy()
+    try:
+        html = requests.request(method, url, headers=headers, data=data,
+                                    proxies=proxies)
+        return html
+    except Exception:
+        response = requests.Response()
+        response.status_code == 500
+        return response

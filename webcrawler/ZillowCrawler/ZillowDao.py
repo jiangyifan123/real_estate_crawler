@@ -1,6 +1,6 @@
 from BaseDecorator import fetchSql, execSqls
 from CustomLog import logged
-from Models import ZillowModel, Properties, ZillowDetailPage
+from Models import Properties, CustomJSONWizard
 
 @fetchSql
 @logged()
@@ -14,9 +14,9 @@ def getRawProperties():
 
 @execSqls
 @logged()
-def insertModelList(modelList: list[ZillowModel]):
-    def getInsertPropertiesString(model: ZillowModel) -> str:
-        properties = model.toProperties()
+def insertModelList(modelList: list[CustomJSONWizard]):
+    def getInsertPropertiesString(model: CustomJSONWizard) -> str:
+        properties = model.getModelFactory(Properties)
         sql = properties.getInsertWithoutDulplicateSql(["address", "property_id"])
         return sql
     if modelList is None or len(modelList) == 0:
@@ -25,12 +25,14 @@ def insertModelList(modelList: list[ZillowModel]):
 
 @execSqls
 @logged()
-def upsertModelList(modelList: list[ZillowDetailPage]):
-    def getInsertPropertiesString(model: ZillowDetailPage) -> str:
-        properties = model.toProperties()
+def upsertModelList(modelList: list[CustomJSONWizard]):
+    def getInsertPropertiesString(model: CustomJSONWizard) -> str:
+        properties = model.getModelFactory(Properties)
         sql = properties.getUpsertSql("property_id")
         return sql
-    if modelList is None or len(modelList) == 0:
+    if modelList is None or not isinstance(modelList, list):
+        return []
+    if len(modelList) == 0:
         return []
     return [getInsertPropertiesString(model) for model in modelList if model is not None]
 

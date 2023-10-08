@@ -1,6 +1,7 @@
 import psycopg2
 from functools import wraps
 import traceback
+from collections.abc import Iterable
 
 
 host = "100.87.56.32"
@@ -29,9 +30,14 @@ def execSqls(fun):
         conn = getConn()
         try:
             with conn.cursor() as curs:
-                for sql in fun(*args, **kargs):
-                    curs.execute(sql)
-                conn.commit()
+                sqlList = fun(*args, **kargs)
+                if isinstance(sqlList, Iterable):
+                    for sql in sqlList:
+                        try:
+                            curs.execute(sql)
+                        except Exception as e:
+                            print(e)
+                    conn.commit()
         except Exception as e:
             print(e)
             traceback.print_exc()

@@ -22,7 +22,7 @@ def parseZillowHtml(content: str) -> tuple[list[ZillowModel], bool]:
     scripts = soup.find_all("script", {"id": "__NEXT_DATA__"})
     if len(scripts) == 0:
         print("parse error")
-        return [modelList, True]
+        return (modelList, True)
 
     try:
         nextPageButton = soup.find("a", {"title": "Next page"})
@@ -32,12 +32,13 @@ def parseZillowHtml(content: str) -> tuple[list[ZillowModel], bool]:
         for result in resultList:
             model = ZillowModel.from_json(json.dumps(result))
             modelList.append(model)
-        return [modelList, nextPageButton.get("aria-disabled") == "true"]
+        return (modelList, nextPageButton.get("aria-disabled") == "true")
+        # return (modelList, True)
     except Exception as e:
         print(e)
         logError(traceback.format_exc())
 
-    return [modelList, True]
+    return (modelList, True)
 
 @logged()
 def parseZillowDetailHtml(content: str) -> ZillowDetailPage:
@@ -89,7 +90,7 @@ def getDataByZipcode(zipcode, page=1) -> tuple[list[ZillowModel], bool]:
     response = requestWithProxy("GET", url, headers=headers, data=payload)
     if response.status_code != 200:
         print('{} status code {}'.format(url, response.status_code))
-        return [[], True]
+        return ([], True)
 
     return parseZillowHtml(response.content)
 
@@ -190,7 +191,7 @@ def getSuggestions(searchText: str) -> SearchResponse | None:
     return None
 
 @logged()
-def getResultByCity(city: str, page: int = 1) -> list[ZillowModel] | None:
+def getResultByCity(city: str, page: int = 1) -> tuple[list[ZillowModel], bool] | None:
     url = "https://www.zillow.com/%s/%d_p" % (city, page)
     payload = {}
     headers = {
@@ -211,7 +212,7 @@ def getResultByCity(city: str, page: int = 1) -> list[ZillowModel] | None:
     response = requestWithProxy("GET", url, headers=headers, data=payload)
     if response.status_code != 200:
         print('{} status code {}'.format(url, response.status_code))
-        return None
+        return ([], True)
     
     return parseZillowHtml(response.content)
 
@@ -232,39 +233,40 @@ def getAllResultByCity(city) -> list[ZillowModel] | None:
 def getEstateByFuzzySearch(searchText) -> list[ZillowModel] | None:
     suggestions = getSuggestions(searchText)
     if suggestions is None or len(suggestions.results) == 0:
-        return
+        return []
 
     regionType = suggestions.results[0].metaData.regionType
     display = suggestions.results[0].display
+    modelList = []
     if regionType in ["city", "neighborhood"]:    
         cityName = ''.join(display.strip('').replace(' ', '-').lower().split(','))
         modelList = getAllResultByCity(cityName)
-        return [getZillowDetailPage(model.detailUrl) for model in modelList]
+        # return [getZillowDetailPage(model.detailUrl) for model in modelList]
     elif regionType == "zipcode":
         modelList = getAllDataByZipcode(display)
-        return [getZillowDetailPage(model.detailUrl) for model in modelList]
+        # return [getZillowDetailPage(model.detailUrl) for model in modelList]
     elif regionType == "Address":
         pass
-    return None
+    return modelList
 
 @logged()
 def getZillowDetailPage(detailUrl):
     payload = {}
     headers = {
-        'authority': 'www.zillow.com',
-        'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
-        'accept-language': 'zh-CN,zh;q=0.9',
-        'cache-control': 'max-age=0',
-        'referer': 'https://www.google.com/',
-        'sec-ch-ua': '"Google Chrome";v="117", "Not;A=Brand";v="8", "Chromium";v="117"',
-        'sec-ch-ua-mobile': '?0',
-        'sec-ch-ua-platform': '"Windows"',
-        'sec-fetch-dest': 'document',
-        'sec-fetch-mode': 'navigate',
-        'sec-fetch-site': 'same-origin',
-        'sec-fetch-user': '?1',
-        'upgrade-insecure-requests': '1',
-        'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/117.0.0.0 Safari/537.36',
+    'authority': 'www.zillow.com',
+    'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
+    'accept-language': 'zh-CN,zh;q=0.9',
+    'cache-control': 'max-age=0',
+    # 'cookie': r'zguid=24|%24acb00326-9a70-42e6-a1f7-eda19d1bcd71; zjs_anonymous_id=%22acb00326-9a70-42e6-a1f7-eda19d1bcd71%22; zjs_user_id=null; zg_anonymous_id=%226c75c121-7d14-4ffc-b7e3-0ce834e02a75%22; _ga=GA1.2.1950585950.1694320334; _pxvid=00cacf70-4f93-11ee-905a-9b35bb49d730; _gcl_au=1.1.981758905.1694320334; __pdst=fb867bfacb1e4ad58a69920429f29855; _fbp=fb.1.1694320334148.856932049; _pin_unauth=dWlkPU9XTXhaVE5qTXpRdE1UYzRNeTAwWXpCa0xXRXlOalF0TVRjNE5tVmtZak5oWkRSbA; FSsampler=962613034; _hp2_id.1215457233=%7B%22userId%22%3A%225541294366932229%22%2C%22pageviewId%22%3A%225124666665405135%22%2C%22sessionId%22%3A%228504840435051524%22%2C%22identity%22%3Anull%2C%22trackerVersion%22%3A%224.0%22%7D; g_state={"i_p":1698556971033,"i_l":4}; _gid=GA1.2.2039922503.1696307236; zgsession=1|1f114d0b-bd78-4cc0-8703-588df2ae51f4; pxcts=ae9f71d9-61cd-11ee-a3a1-956716f9b366; DoubleClickSession=true; _clck=gw9qia|2|ffm|0|1348; JSESSIONID=806D2613E4EF7B428BD111E4CDB3073B; _pxff_cc=U2FtZVNpdGU9TGF4Ow==; _pxff_cfp=1; _pxff_bsco=1; _gat=1; _px3=9618a262896f38f67a0502720a6537efed8d69224a92e32f6d17e7e78f4e143f:GUWrULwBAeOz9Msh5MlWiHOpm+nsi+eZLqOd3BR0ZiZ9s/qBFHbVbGBusc5dp8KPwBF3Dq5Nwok+fZYE/dgYxA==:1000:4Wt/F9XuWERQ9cX2ZZRZZe9dqNitu28aWpSJtJW/Sw9PCYQDmLbhzwHTgFnWMNgSWTdbUsAP5Lv1Jq+OPB278NNoFh/y4OhvOa3SmqAxZyWI38VrUBzYTawND4x4UAMZINQ0ATN9hmE5e4QKYsJ5cF31zu+mlsqoG3KWwDZkAHydJzMQ36qAu2E+eURA0qqkNjrLBw51mDftknCuvASMipDOEZlQmrD0hziIhJcWxsc=; search=6|1699164108332%7Crect%3D37.365655037338904%252C-121.85400009155273%252C37.28579942182216%252C-122.08488464355469%26rid%3D13713%26disp%3Dmap%26mdm%3Dauto%26p%3D1%26sort%3Ddays%26z%3D1%26listPriceActive%3D1%26fs%3D1%26fr%3D0%26mmm%3D0%26rs%3D0%26ah%3D0%26singlestory%3D0%26housing-connector%3D0%26abo%3D0%26garage%3D0%26pool%3D0%26ac%3D0%26waterfront%3D0%26finished%3D0%26unfinished%3D0%26cityview%3D0%26mountainview%3D0%26parkview%3D0%26waterview%3D0%26hoadata%3D1%26zillow-owned%3D0%263dhome%3D0%26featuredMultiFamilyBuilding%3D0%26commuteMode%3Ddriving%26commuteTimeOfDay%3Dnow%09%0999580%09%7B%22isList%22%3Atrue%2C%22isMap%22%3Atrue%7D%09%09%09%09%09; AWSALB=tTT7GIGe9XgOgCCcZggoCOGBaFZ4+tYakF5evMHX1xnIxiukY+dfhMNjQx3t8Bht1ch/HJHMLJy0svQmFOBB9McKGfHUm2RlrGr669o3CcZaGj1mQpBZ8DHVBUUW; AWSALBCORS=tTT7GIGe9XgOgCCcZggoCOGBaFZ4+tYakF5evMHX1xnIxiukY+dfhMNjQx3t8Bht1ch/HJHMLJy0svQmFOBB9McKGfHUm2RlrGr669o3CcZaGj1mQpBZ8DHVBUUW; _uetsid=2389628061a511eeb08c2f4d30bb3c4a; _uetvid=03ffc3e04f9311ee8b15e72c41dbe29d; tfpsi=f1ab2125-e9fb-44cb-bbb4-b8f1a2e22e78; _clsk=atle44|1696572108907|1|0|z.clarity.ms/collect; __gads=ID=3e3a9a68d3a8472d:T=1694918441:RT=1696572110:S=ALNI_MZxnAIVNGbs-1Zp6pfVqakuyf-zCw; __gpi=UID=00000d9371d4dbb3:T=1694918441:RT=1696572110:S=ALNI_MZeryHVZvpEiSvolcNE5R2eX71SiA; search=6|1699003862391%7Czpid%3D49146814%26sort%3Dpriorityscore%09%0918959%09%7B%22isList%22%3Atrue%2C%22isMap%22%3Afalse%7D%09%09%09%09%09; zgsession=1|a28ff679-6c63-4874-9851-2aa7ae14329c; zguid=24|%24c2919238-9456-41f3-8ca4-19c1b30ae423; AWSALB=7evVhMGiGzyhDpqbxugMFFKQGEr9jws+5KAOiVInkR1bdRWZDpSCEKGkBaT4hM+HBPIBytwMVl5wCmbMkvZrhvXg2r0NYp0mblmJ2rOklYY3kfk+yvLL1K2QYSo3; AWSALBCORS=7evVhMGiGzyhDpqbxugMFFKQGEr9jws+5KAOiVInkR1bdRWZDpSCEKGkBaT4hM+HBPIBytwMVl5wCmbMkvZrhvXg2r0NYp0mblmJ2rOklYY3kfk+yvLL1K2QYSo3; JSESSIONID=4B3F4B648D1CCA9E8F5247176F4DE21A',
+    'sec-ch-ua': '"Google Chrome";v="117", "Not;A=Brand";v="8", "Chromium";v="117"',
+    'sec-ch-ua-mobile': '?0',
+    'sec-ch-ua-platform': '"Windows"',
+    'sec-fetch-dest': 'document',
+    'sec-fetch-mode': 'navigate',
+    'sec-fetch-site': 'same-origin',
+    'sec-fetch-user': '?1',
+    'upgrade-insecure-requests': '1',
+    'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/117.0.0.0 Safari/537.36'
     }
     response = requestWithProxy("GET", detailUrl, headers=headers, data=payload)
     if response.status_code != 200:
@@ -274,7 +276,7 @@ def getZillowDetailPage(detailUrl):
     return parseZillowDetailHtml(response.content)
 
 if __name__ == "__main__":
-    # url = "https://www.zillow.com/homedetails/79-E-Agate-Ave-UNIT-401-Las-Vegas-NV-89123/55110557_zpid/"
-    # print(getZillowDetailPage(url))
-    test = getEstateByFuzzySearch("seattle")
-    print(test[0])
+    url = "https://www.zillow.com/homedetails/79-E-Agate-Ave-UNIT-401-Las-Vegas-NV-89123/55110557_zpid/"
+    print(getZillowDetailPage(url))
+    # test = getEstateByFuzzySearch("seattle")
+    # print(test[0])

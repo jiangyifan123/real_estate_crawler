@@ -47,28 +47,31 @@ class HdpData(CustomJSONWizard):
 
 @dataclass
 class ZillowModel(CustomJSONWizard):
-    # zpid: str | None
-    # statusType: str | None
-    # address: str | None
-    # addressStreet: str | None
-    # addressCity: str | None
-    # addressState: str | None
-    # addressZipcode: str | None
-    # countryCurrency: str | None
+    zpid: str | None
+    statusType: str | None
+    address: str | None
+    addressStreet: str | None
+    addressCity: str | None
+    addressState: str | None
+    addressZipcode: str | None
+    countryCurrency: str | None
     detailUrl: str | None
-    # price: Optional[str] = None
-    # unformattedPrice: Optional[float] = None
-    # area: Optional[int] = None
-    # latLong: Optional[LatLong] = None
-    # imgSrc: Optional[str] = None
-    # beds: Optional[int] = None
-    # baths: Optional[int] = None
-    # zestimate: Optional[float] = None
-    # hdpData: Optional[HdpData] = None
-    # carouselPhotos: Optional[list[PhotoInfo]] = field(default_factory=list)
-    # statusText: Optional[str] = None
+    price: Optional[str] = None
+    unformattedPrice: Optional[float] = None
+    area: Optional[int] = None
+    latLong: Optional[LatLong] = None
+    imgSrc: Optional[str] = None
+    beds: Optional[int] = None
+    baths: Optional[int] = None
+    zestimate: Optional[float] = None
+    hdpData: Optional[HdpData] = None
+    carouselPhotos: Optional[list[PhotoInfo]] = field(default_factory=list)
+    statusText: Optional[str] = None
 
-    def toProperties(self):
+    def __post_init__(self):
+        self.registerModelFactory(Properties, self.__toProperties)
+
+    def __toProperties(self):
         homeInfo = self.hdpData.homeInfo
         return Properties(
             property_id = self.zpid,
@@ -167,7 +170,7 @@ class Properties(CustomJSONWizard):
     def canHandle(self, k, enterFrom):
         if str(k) == 'id' and enterFrom == self.EnterFrom.WRITE:
             return False
-        return True
+        return super().canHandle(k, enterFrom)
     
     def handleValues(self, k, v):
         if k == 'property_id':
@@ -242,7 +245,10 @@ class ZillowDetailPage(CustomJSONWizard):
     num_garage: Optional[int] = None
     status_text: Optional[str] = None
 
-    def toProperties(self):
+    def __post_init__(self, *args, **kargs):
+        self.registerModelFactory(Properties, self.__toProperties)
+
+    def __toProperties(self):
         return Properties(
             address = self.streetAddress,
             city = self.city,
