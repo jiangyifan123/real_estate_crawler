@@ -9,7 +9,7 @@ import ZillowDao
 from CustomLog import logged, logError, logDebug
 
 def getUrlByZipcode(zipcode: str, page: int) -> str:
-    return "https://www.zillow.com/homes/%s_rb/%d_p/" % (zipcode, page)
+    return "https://www.zillow.com/homes/%s_rb/%s/" % (zipcode, "%d_p" % page if page > 1 else "")
 
 
 def getUrlByCity(city: str) -> str:
@@ -32,7 +32,7 @@ def parseZillowHtml(content: str) -> tuple[list[ZillowModel], bool]:
         for result in resultList:
             model = ZillowModel.from_json(json.dumps(result))
             modelList.append(model)
-        return (modelList, nextPageButton.get("aria-disabled") == "true")
+        return (modelList, nextPageButton is None or nextPageButton.get("aria-disabled", "true") == "true")
         # return (modelList, True)
     except Exception as e:
         print(e)
@@ -72,25 +72,27 @@ def getDataByZipcode(zipcode, page=1) -> tuple[list[ZillowModel], bool]:
     url = getUrlByZipcode(zipcode, page)
     payload = {}
     headers = {
-        'authority': 'www.zillow.com',
-        'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
-        'accept-language': 'zh-CN,zh;q=0.9',
-        'sec-ch-ua': '"Chromium";v="116", "Not)A;Brand";v="24", "Google Chrome";v="116"',
-        'sec-ch-ua-mobile': '?0',
-        'sec-ch-ua-platform': '"Windows"',
-        'sec-fetch-dest': 'document',
-        'sec-fetch-mode': 'navigate',
-        'sec-fetch-site': 'none',
-        'sec-fetch-user': '?1',
-        'upgrade-insecure-requests': '1',
-        'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36',
-        'mode': 'no-cors',
+    'authority': 'www.zillow.com',
+    'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
+    'accept-language': 'zh-CN,zh;q=0.9',
+    'cookie': 'JSESSIONID=F2DE6DF8FC67940EBD95997543678B82; zguid=24|%244f68cb06-c00b-494d-975d-5d99781a90de; zgsession=1|8b2e4b1b-6c00-4e6e-9de4-4143486ea057; tfpsi=2a530b2c-b27a-4289-9c34-358be179bb28; _ga=GA1.2.1286085892.1696727940; _gid=GA1.2.1552879356.1696727940; zjs_anonymous_id=%224f68cb06-c00b-494d-975d-5d99781a90de%22; zjs_user_id=null; zg_anonymous_id=%22192b12c1-bccc-45b9-90ba-d348a69cfc38%22; pxcts=a93a4cd9-6578-11ee-8389-c809c036803d; _pxvid=a93a3a66-6578-11ee-8389-8060146a0939; _gcl_au=1.1.314056997.1696727941; DoubleClickSession=true; __pdst=4029497d387e46abb83a30f2fa4bee12; _clck=5e57ta|2|ffo|0|1376; _pin_unauth=dWlkPVl6a3dOVEpqTkRRdE9XRTJaQzAwWWpnM0xXSXhaVFF0T1RCa09EVTFOREpoTWpCaQ; AWSALB=vn10qfYPyQ83spAiH1H0TvIHxn/rmG1XsSPWfGd+l1UNDlb74A6f1lRQ3rUx7W8LcYjeHE/cYCUMRX8i6DyiXhf2ANey3V6AV+f2qcRBraklow/l0fVd6lLGtzgZ; AWSALBCORS=vn10qfYPyQ83spAiH1H0TvIHxn/rmG1XsSPWfGd+l1UNDlb74A6f1lRQ3rUx7W8LcYjeHE/cYCUMRX8i6DyiXhf2ANey3V6AV+f2qcRBraklow/l0fVd6lLGtzgZ; search=6|1699320337481%7Crect%3D32.79900746614807%2C-96.78929111364747%2C32.75679132932848%2C-96.81830188635254%26rid%3D90755%26disp%3Dmap%26mdm%3Dauto%26p%3D1%26z%3D1%26listPriceActive%3D1%26fs%3D1%26fr%3D0%26mmm%3D0%26rs%3D0%26ah%3D0%26singlestory%3D0%26housing-connector%3D0%26abo%3D0%26garage%3D0%26pool%3D0%26ac%3D0%26waterfront%3D0%26finished%3D0%26unfinished%3D0%26cityview%3D0%26mountainview%3D0%26parkview%3D0%26waterview%3D0%26hoadata%3D1%26zillow-owned%3D0%263dhome%3D0%26featuredMultiFamilyBuilding%3D0%26commuteMode%3Ddriving%26commuteTimeOfDay%3Dnow%09%0990755%09%7B%22isList%22%3Atrue%2C%22isMap%22%3Atrue%7D%09%09%09%09%09; _px3=21a828eaa1d86133ec223180698e0c8b470064509a291b97f6fa42b2d7d21ceb:kvm+7Z1fuBdXZr75goo9xdfZDzPjRlMJbPZQlI9sYE9A956ElyJGmTl2DO4pJYxiz07RmwEeBwRbO+8LjDf9VQ==:1000:EmKM8Me998jgQIenK3nq143+1yubSfTr9qlnBWL4vGtx5bhCpLk1MH3XQbjq1L/OGJ4UFWNYtKKRgskr0Pqi3XRsDGP8cZ8WQEYt7oszZZAdnGpN5Oy64uOGx/SH8OLkV6fnyTk7Z7MAkUK8CM66YZm4/leRdV/PslV+11NxD1RSNdGSOkKIF3G/NMjQv7dX0su6vd29TfeVXzRjbOOhvqXoPWtQyxv6UMRHC33YID8=; __gads=ID=5e2ce1b56345422c:T=1696727941:RT=1696728338:S=ALNI_MZj9175YVRHW-WJ9bIzxwjQH__9uA; __gpi=UID=00000d97a24abed1:T=1696727941:RT=1696728338:S=ALNI_MZOSmMg8ckKzav8n5WIuDRqspc6vQ; _uetsid=288700d0657711eea33edf2cf01cbdbb; _uetvid=03ffc3e04f9311ee8b15e72c41dbe29d; _clsk=7qmzrb|1696728338479|4|0|s.clarity.ms/collect; search=6|1699320481317%7Crb%3D75201%26rect%3D32.802623%252C-96.783247%252C32.77261%252C-96.81563%26sort%3Dpriorityscore%09%0990754%09%7B%22isList%22%3Atrue%2C%22isMap%22%3Afalse%7D%09%09%09%09%09; zgsession=1|a28ff679-6c63-4874-9851-2aa7ae14329c; zguid=24|%24c2919238-9456-41f3-8ca4-19c1b30ae423; AWSALB=+JUSuZGTHLF5UqGDzHuyuo/ZBNCGsTyoieIturi+mRNCLRRsSTGwVXX6+z9iOWjA08fEFtXHADYOHKG4i1rtQTmheDsmvQPGTbP2BhXuJVMUVc/5qpGlyPn06Rly; AWSALBCORS=+JUSuZGTHLF5UqGDzHuyuo/ZBNCGsTyoieIturi+mRNCLRRsSTGwVXX6+z9iOWjA08fEFtXHADYOHKG4i1rtQTmheDsmvQPGTbP2BhXuJVMUVc/5qpGlyPn06Rly; JSESSIONID=89D94D12A474A9AF2DEA9AFA941B4212',
+    'sec-ch-ua': '"Google Chrome";v="117", "Not;A=Brand";v="8", "Chromium";v="117"',
+    'sec-ch-ua-mobile': '?0',
+    'sec-ch-ua-platform': '"Windows"',
+    'sec-fetch-dest': 'document',
+    'sec-fetch-mode': 'navigate',
+    'sec-fetch-site': 'none',
+    'sec-fetch-user': '?1',
+    'upgrade-insecure-requests': '1',
+    'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/117.0.0.0 Safari/537.36'
     }
 
     response = requestWithProxy("GET", url, headers=headers, data=payload)
     if response.status_code != 200:
         print('{} status code {}'.format(url, response.status_code))
         return ([], True)
+    
+    Collect(url)
 
     return parseZillowHtml(response.content)
 
@@ -214,6 +216,7 @@ def getResultByCity(city: str, page: int = 1) -> tuple[list[ZillowModel], bool] 
         print('{} status code {}'.format(url, response.status_code))
         return ([], True)
     
+    Collect(url)
     return parseZillowHtml(response.content)
 
 @logged()
@@ -274,6 +277,29 @@ def getZillowDetailPage(detailUrl):
         return None
 
     return parseZillowDetailHtml(response.content)
+
+def Collect(referer):
+    url = "https://s.clarity.ms/collect"
+
+    payload = '%5E%1F%5E%C2%8B%5E%08%5E='
+    headers = {
+    'Accept': 'application/x-clarity-gzip',
+    'Accept-Language': 'zh-CN,zh;q=0.9',
+    'Connection': 'keep-alive',
+    'Cookie': 'MUID=00CDE08798B668970DFCF3239932696B',
+    'Origin': 'https://www.zillow.com',
+    'Referer': referer,
+    'Sec-Fetch-Dest': 'empty',
+    'Sec-Fetch-Mode': 'cors',
+    'Sec-Fetch-Site': 'cross-site',
+    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/117.0.0.0 Safari/537.36',
+    'sec-ch-ua': '"Google Chrome";v="117", "Not;A=Brand";v="8", "Chromium";v="117"',
+    'sec-ch-ua-mobile': '?0',
+    'sec-ch-ua-platform': '"Windows"',
+    'Content-Type': 'application/x-www-form-urlencoded'
+    }
+
+    response = requests.request("POST", url, headers=headers, data=payload)
 
 if __name__ == "__main__":
     url = "https://www.zillow.com/homedetails/79-E-Agate-Ave-UNIT-401-Las-Vegas-NV-89123/55110557_zpid/"

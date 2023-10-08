@@ -35,7 +35,7 @@ def get_random_proxy():
 
 def requestWithProxy(method, url, headers, data) -> requests.Response:
     stopCount = Random.randint(1, 2)
-    # time.sleep(stopCount)
+    time.sleep(stopCount)
     if (stopCount % 2 == 0):
         return requestWithProxy2(method, url, headers, data)
     else:
