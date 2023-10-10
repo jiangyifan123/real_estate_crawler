@@ -3,16 +3,16 @@ import ZillowDao
 import ProxyPool
 
 CityList = [
-    "Dallas",
-    "Houston",
-    "Austin",
-    "Pittsburgh",
-    "Nashville",
+    # "Dallas",
+    # "Houston",
+    # "Austin",
+    # "Pittsburgh",
+    # "Nashville",
     "Lafayette",
     "Las Vegas",
-    "Chandler",
-    "Charlotte",
-    "Atlanta",
+    # "Chandler",
+    # "Charlotte",
+    # "Atlanta",
 ]
 
 ZipcodeList = {
