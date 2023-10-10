@@ -45,8 +45,8 @@ def getModelsListFromDataset(cls):
 @execSqls
 def updateModel(modelList: list, where_condition: list):
     return [model.getUpdateSql(where_condition) for model in modelList if model is not None]
-            
+
 
 if __name__ == '__main__':
     modelList = getModelsListFromDataset(Properties)
-    updateModel(modelList, ["id"])
+    print(modelList, ["id"])

@@ -8,12 +8,14 @@ import traceback
 import ZillowDao
 from CustomLog import logged, logError, logDebug
 
+isDebuging = False
+
 def getUrlByZipcode(zipcode: str, page: int) -> str:
-    return "https://www.zillow.com/homes/%s_rb/%s/" % (zipcode, "%d_p" % page if page > 1 else "")
+    return "https://www.zillow.com/homes/{}/".format(r"/".join(["%s_rb" % zipcode, "%d_p" % page if page > 1 else ""]))
 
 
-def getUrlByCity(city: str) -> str:
-    return "https://www.zillow.com/%s" % city
+def getUrlByCity(city: str, page: int) -> str:
+    return "https://www.zillow.com/{}/".format(r"/".join([city, "%d_p" % page if page > 1 else ""]))
 
 @logged()
 def parseZillowHtml(content: str) -> tuple[list[ZillowModel], bool]:
@@ -32,7 +34,7 @@ def parseZillowHtml(content: str) -> tuple[list[ZillowModel], bool]:
         for result in resultList:
             model = ZillowModel.from_json(json.dumps(result))
             modelList.append(model)
-        return (modelList, nextPageButton is None or nextPageButton.get("aria-disabled", "true") == "true")
+        return (modelList, isDebuging or nextPageButton is None or nextPageButton.get("aria-disabled", "true") == "true")
         # return (modelList, True)
     except Exception as e:
         print(e)
@@ -194,7 +196,7 @@ def getSuggestions(searchText: str) -> SearchResponse | None:
 
 @logged()
 def getResultByCity(city: str, page: int = 1) -> tuple[list[ZillowModel], bool] | None:
-    url = "https://www.zillow.com/%s/%d_p" % (city, page)
+    url = getUrlByCity(city, page)
     payload = {}
     headers = {
         'authority': 'www.zillow.com',

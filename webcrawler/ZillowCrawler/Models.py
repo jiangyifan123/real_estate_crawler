@@ -69,12 +69,13 @@ class ZillowModel(CustomJSONWizard):
     statusText: Optional[str] = None
 
     def __post_init__(self):
+        super().__post_init__()
         self.registerModelFactory(Properties, self.__toProperties)
 
     def __toProperties(self):
         homeInfo = self.hdpData.homeInfo
         return Properties(
-            property_id = self.zpid,
+            # property_id = self.zpid,
             address = homeInfo.streetAddress,
             city = homeInfo.city,
             state = homeInfo.state,
@@ -246,6 +247,7 @@ class ZillowDetailPage(CustomJSONWizard):
     status_text: Optional[str] = None
 
     def __post_init__(self, *args, **kargs):
+        super().__post_init__()
         self.registerModelFactory(Properties, self.__toProperties)
 
     def __toProperties(self):

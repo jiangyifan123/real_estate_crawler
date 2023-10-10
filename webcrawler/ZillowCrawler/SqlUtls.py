@@ -4,27 +4,28 @@ from BaseDecorator import fetchSql, execSqls
 from enum import Enum
 import json
 
-def handleValues(v):
-  if v is None:
-    return "NULL"
-  if isinstance(v, list) or isinstance(v, dict):
-    return "'{}'".format(json.dumps(v).replace("[", "{").replace("]", "}"))
-  if isinstance(v, str):
-    return r"'{value}'".format(
-      value = str(v).replace(r"'", r"''")
-    )
-  return str(v)
-
 class CustomJSONWizard(JSONWizard):
   class EnterFrom(Enum):
     READ = 1
     WRITE = 2
     UPDATE = 3
   
-  toModelDict = {}
+  def __post_init__(self):
+    self.toModelDict = {}
+
+  def handleValues(self, k, v):
+    if v is None:
+      return "NULL"
+    if isinstance(v, list) or isinstance(v, dict):
+      return "'{}'".format(json.dumps(v).replace("[", "{").replace("]", "}"))
+    if isinstance(v, str):
+      return r"'{value}'".format(
+        value = str(v).replace(r"'", r"''")
+      )
+    return str(v)
 
   def _toSqlDict(self, enterFrom) -> dict:
-    return {k: handleValues(v).strip() for k, v in asdict(self).items() if self.canHandle(k, enterFrom)}
+    return {k: self.handleValues(k, v).strip() for k, v in asdict(self).items() if self.canHandle(k, enterFrom)}
   
   def getInsertSql(self):
     sqlDict = self._toSqlDict(self.EnterFrom.WRITE)
