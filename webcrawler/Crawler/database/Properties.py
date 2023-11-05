@@ -4,7 +4,7 @@ from Settings import Settings
 
 URL = Settings().getConfig("database").get("url")
 
-def updateProperty(data: PropertyModel):
+def updateProperty(model: PropertyModel):
     headers = {
         'accept': 'application/json',
         'Content-Type': 'application/json'
@@ -13,6 +13,6 @@ def updateProperty(data: PropertyModel):
         method="POST",
         url=f"{URL}/properties/property",
         headers=headers,
-        data=data.to_json()
+        data=model.to_json()
     )
     print(response.text)
