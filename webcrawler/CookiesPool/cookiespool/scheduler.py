@@ -1,7 +1,7 @@
 import time
 from multiprocessing import Process
 
-from cookiespool.api import app
+from cookiespool.api.main import start_api
 from cookiespool.config import *
 from cookiespool.generator import *
 from cookiespool.tester import *
@@ -36,15 +36,10 @@ class Scheduler(object):
             except Exception as e:
                 print(e.args)
     
-    @staticmethod
-    def api():
-        print('API接口开始运行')
-        app.run(host=API_HOST, port=API_PORT)
-    
     def run(self):
         if API_PROCESS:
-            api_process = Process(target=Scheduler.api)
-            api_process.start()
+            print('API接口开始运行')
+            start_api()
         
         if GENERATOR_PROCESS:
             generate_process = Process(target=Scheduler.generate_cookie)
