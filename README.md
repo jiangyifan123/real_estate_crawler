@@ -4,10 +4,10 @@ create virtual environment
 
 ```bash
 cd ./webcrawler/Crawler
-python3 -m venv Crawler
+conda create --name Crawler --file env.yml
 ```
 
-install dependencies
+or install dependencies
 
 ```bash
 pip3 install -r requirements.txt
