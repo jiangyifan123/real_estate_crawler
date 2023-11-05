@@ -1,0 +1,34 @@
+{'meta': {'version': '0.106.0.0.106.0.2143.v106', 'es_took': 3
+    }, 'autocomplete': [
+        {'area_type': 'school', '_id': 'school: 078703051', '_score': 37.66291, 'school_id': '078703051', 'school': 'Testimonial Christian School', 'line': '5701 S Western Ave', 'city': 'Los Angeles', 'postal_code': '90062', 'state_code': 'CA', 'country': 'USA', 'centroid': {'lon': -118.309426, 'lat': 33.990742
+            }, 'has_catchment': False, 'slug_id': 'Testimonial-Christian-School-078703051', 'city_slug_id': 'Los-Angeles_CA'
+        },
+        {'area_type': 'neighborhood', '_id': 'neigh:fl_plant-city_teston-place', '_score': 37.241055, 'neighborhood': 'Teston Place', 'city': 'Plant City', 'state_code': 'FL', 'country': 'USA', 'centroid': {'lon': -82.128814, 'lat': 28.061734
+            }, 'slug_id': 'Teston-Place_Plant-City_FL', 'geo_id': '7b6222f1-72a1-5fbc-bf01-6e8203a28410'
+        },
+        {'area_type': 'school', '_id': 'school: 0725728321', '_score': 36.610542, 'school_id': '0725728321', 'school': 'Skiles Test Elementary School', 'line': '7001 Johnson Road', 'city': 'Indianapolis', 'postal_code': '46220', 'state_code': 'IN', 'country': 'USA', 'centroid': {'lon': -86.049455, 'lat': 39.882046
+            }, 'has_catchment': True, 'slug_id': 'Skiles-Test-Elementary-School-0725728321', 'city_slug_id': 'Indianapolis_IN'
+        },
+        {'area_type': 'school', '_id': 'school: 0725735311', '_score': 36.591343, 'school_id': '0725735311', 'school': 'Julia E Test School', 'line': '22 South 22nd Street', 'city': 'Richmond', 'postal_code': '47374', 'state_code': 'IN', 'country': 'USA', 'centroid': {'lon': -84.871821, 'lat': 39.828815
+            }, 'has_catchment': True, 'slug_id': 'Julia-E-Test-School-0725735311', 'city_slug_id': 'Richmond_IN'
+        },
+        {'area_type': 'school', '_id': 'school: 0748637741', '_score': 35.719837, 'school_id': '0748637741', 'school': 'New Testament Church School', 'line': '511 Orange Street', 'city': 'Newark', 'postal_code': '07107', 'state_code': 'NJ', 'country': 'USA', 'centroid': {'lon': -74.192017, 'lat': 40.754109
+            }, 'has_catchment': False, 'slug_id': 'New-Testament-Church-School-0748637741', 'city_slug_id': 'Newark_NJ'
+        },
+        {'area_type': 'school', '_id': 'school: 0751543331', '_score': 35.711437, 'school_id': '0751543331', 'school': 'New Testament Church School', 'line': '306 Rumsey Road', 'city': 'Yonkers', 'postal_code': '10705', 'state_code': 'NY', 'country': 'USA', 'centroid': {'lon': -73.883034, 'lat': 40.927792
+            }, 'has_catchment': False, 'slug_id': 'New-Testament-Church-School-0751543331', 'city_slug_id': 'Yonkers_NY'
+        },
+        {'area_type': 'school', '_id': 'school: 071454831', '_score': 35.710236, 'school_id': '071454831', 'school': 'New Testament Baptist School', 'line': 'PO BOX 56', 'city': 'Phenix City', 'postal_code': '36868', 'state_code': 'AL', 'country': 'USA', 'centroid': {'lon': -85.086088, 'lat': 32.492811
+            }, 'has_catchment': False, 'slug_id': 'New-Testament-Baptist-School-071454831', 'city_slug_id': 'Phenix-City_AL'
+        },
+        {'area_type': 'school', '_id': 'school: 0717330261', '_score': 35.692238, 'school_id': '0717330261', 'school': 'New Testament Baptist School', 'line': '2805 N.E. Pine Island Rd.', 'city': 'Cape Coral', 'postal_code': '33909', 'state_code': 'FL', 'country': 'USA', 'centroid': {'lon': -81.91362, 'lat': 26.681581
+            }, 'has_catchment': False, 'slug_id': 'New-Testament-Baptist-School-0717330261', 'city_slug_id': 'Cape-Coral_FL'
+        },
+        {'area_type': 'school', '_id': 'school: 0754295001', '_score': 35.692238, 'school_id': '0754295001', 'school': 'New Testament Baptist Christian School', 'line': 'PO BOX 40', 'city': 'Larimore', 'postal_code': '58251', 'state_code': 'ND', 'country': 'USA', 'centroid': {'lon': -97.615434, 'lat': 47.904799
+            }, 'has_catchment': False, 'slug_id': 'New-Testament-Baptist-Christian-School-0754295001', 'city_slug_id': 'Larimore_ND'
+        },
+        {'area_type': 'school', '_id': 'school: 0717245141', '_score': 35.688637, 'school_id': '0717245141', 'school': 'Ged Testing', 'line': '2700 Judge Fran Jamieson Way', 'city': 'Melbourne', 'postal_code': '32940', 'state_code': 'FL', 'country': 'USA', 'centroid': {'lon': -80.736603, 'lat': 28.248215
+            }, 'has_catchment': False, 'slug_id': 'Ged-Testing-0717245141', 'city_slug_id': 'Melbourne_FL'
+        }
+    ]
+}

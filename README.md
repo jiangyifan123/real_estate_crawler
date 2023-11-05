@@ -3,14 +3,14 @@
 create virtual environment
 
 ```bash
-cd ./webcrawler/ZillowCrawler
-python3 -m venv ./ZillowCrawler
-source ./ZillowCrawler/bin/activate
+cd ./webcrawler/Crawler
+conda create --name Crawler --file env.yml
 ```
 
-install dependencies
+or install dependencies
 
 ```bash
 pip3 install -r requirements.txt
 ```
 
+run the main.py
