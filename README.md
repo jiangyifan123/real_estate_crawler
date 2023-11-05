@@ -3,9 +3,8 @@
 create virtual environment
 
 ```bash
-cd ./webcrawler/ZillowCrawler
-python3 -m venv ./ZillowCrawler
-source ./ZillowCrawler/bin/activate
+cd ./webcrawler/Crawler
+python3 -m venv Crawler
 ```
 
 install dependencies
@@ -14,3 +13,4 @@ install dependencies
 pip3 install -r requirements.txt
 ```
 
+run the main.py

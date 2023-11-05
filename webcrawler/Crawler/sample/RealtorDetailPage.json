@@ -1,0 +1,568 @@
+{
+    "propertyDetails": {
+        "buyers": null,
+        "community": null,
+        "estimates": {
+            "current_values": null,
+            "historical_values": null,
+            "forecast_values": null
+        },
+        "days_on_market": null,
+        "move_in_date": null,
+        "description": {
+            "baths": 2,
+            "baths_3qtr": null,
+            "baths_full": 2,
+            "baths_full_calc": 2,
+            "baths_half": null,
+            "baths_max": null,
+            "baths_min": null,
+            "baths_partial_calc": null,
+            "baths_total": null,
+            "baths_consolidated": "2",
+            "beds": 3,
+            "beds_max": null,
+            "beds_min": null,
+            "construction": null,
+            "cooling": null,
+            "exterior": null,
+            "fireplace": null,
+            "garage": null,
+            "garage_max": null,
+            "garage_min": null,
+            "garage_type": null,
+            "heating": null,
+            "logo": null,
+            "lot_sqft": 4950,
+            "name": null,
+            "pool": null,
+            "roofing": null,
+            "rooms": null,
+            "sqft": 1346,
+            "sqft_max": null,
+            "sqft_min": null,
+            "stories": 1,
+            "styles": null,
+            "sub_type": null,
+            "text": "New Construction in Couret Farms PH 8! Colston Craftsman floorplan offers 3 bedroom and 2 full baths. The kitchen includes cabinet hardware, subway tile backsplash, pendant lights at island, undermount equal bowl sink, slide in gas range, stainless appliances, 3cm granite countertops and custom built cabinets. Living area offers cathedral ceiling and a ventless gas fireplace with wood mantel. Wood laminate flooring through out and tile in wet areas. Master bathroom has a custom tile shower. New Orleans style crown throughout. Exterior of homes includes: Fir wood front door with stain grade, high definition architectural shingles, up to 10 pallets of sod and landscaping at the front. Ask us how you can save money towards yours closing cost by using our Preferred Lender & Title.",
+            "type": "single_family",
+            "units": null,
+            "year_built": 2023,
+            "year_renovated": null,
+            "zoning": null
+        },
+        "details": [
+            {
+                "category": "Bedrooms",
+                "parent_category": "Interior",
+                "text": [
+                    "Bedrooms: 3",
+                    "Primary Bedroom Level: First",
+                    "Bedroom 2 Level: First",
+                    "Bedroom 3 Level: First"
+                ]
+            },
+            {
+                "category": "Bathrooms",
+                "parent_category": "Interior",
+                "text": [
+                    "Total Bathrooms: 2",
+                    "Full Bathrooms: 2"
+                ]
+            },
+            {
+                "category": "Interior Features",
+                "parent_category": "Interior",
+                "text": [
+                    "9+ Ft Ceiling",
+                    "Attic Access",
+                    "Cathedral Ceiling",
+                    "Crown Molding",
+                    "Double Vanity",
+                    "Electric Dryer Con",
+                    "Electric Washer Con",
+                    "Gas Stove Con",
+                    "Icemaker Con",
+                    "Kitchen Island",
+                    "Master Bath",
+                    "Separate Shower",
+                    "Walk-in Pantry",
+                    "Walk-In Closet(s)",
+                    "Flooring: Tile, Wood Laminate"
+                ]
+            },
+            {
+                "category": "Appliances",
+                "parent_category": "Interior",
+                "text": [
+                    "Dishwasher",
+                    "Disposal",
+                    "Gas Range",
+                    "Microwave"
+                ]
+            },
+            {
+                "category": "Kitchen and Dining",
+                "parent_category": "Interior",
+                "text": [
+                    "Kitchen Countertops: Granite",
+                    "Dining Room Level: Main",
+                    "Kitchen Level: Main"
+                ]
+            },
+            {
+                "category": "Heating and Cooling",
+                "parent_category": "Interior",
+                "text": [
+                    "Cooling Features: Central Air",
+                    "Fireplace Features: 1 Fireplace, Gas, Ventless",
+                    "Heating Features: Central",
+                    "Number of Fireplaces: 1"
+                ]
+            },
+            {
+                "category": "Other Rooms",
+                "parent_category": "Interior",
+                "text": [
+                    "Living Room Level: Main"
+                ]
+            },
+            {
+                "category": "Exterior and Lot Features",
+                "parent_category": "Exterior",
+                "text": [
+                    "Landscaped",
+                    "Outside Light",
+                    "Porch",
+                    "Patio And Porch Features: Covered, Open"
+                ]
+            },
+            {
+                "category": "Land Info",
+                "parent_category": "Exterior",
+                "text": [
+                    "Lot Size Acres: 0.1136364",
+                    "Lot Size Dimensions: 45x110",
+                    "Lot Size Square Feet: 4950"
+                ]
+            },
+            {
+                "category": "Garage and Parking",
+                "parent_category": "Exterior",
+                "text": [
+                    "Parking Features: Garage, Garage Faces Rear"
+                ]
+            },
+            {
+                "category": "Homeowners Association",
+                "parent_category": "Community",
+                "text": [
+                    "Association: Yes",
+                    "Association Fee: 588",
+                    "Association Fee Frequency: Annually",
+                    "Association Fee Includes: Management, Pool, Recreation Facilities",
+                    "Calculated Total Monthly Association Fees: 49"
+                ]
+            },
+            {
+                "category": "School Information",
+                "parent_category": "Community",
+                "text": [
+                    "Elementary School: Live Oak",
+                    "High School: Carencro",
+                    "Middle School: Carencro"
+                ]
+            },
+            {
+                "category": "Other Property Info",
+                "parent_category": "Listing",
+                "text": [
+                    "Source Listing Status: Active",
+                    "County: Lafayette",
+                    "Source Property Type: Residential",
+                    "Home Warranty: Yes",
+                    "Area: D",
+                    "Source Neighborhood: Couret Farms",
+                    "Subdivision: Couret Farms",
+                    "Property Subtype: Detached Single Family",
+                    "Source System Name: C2C"
+                ]
+            },
+            {
+                "category": "Building and Construction",
+                "parent_category": "Features",
+                "text": [
+                    "Total Square Feet Living: 1346",
+                    "Year Built: 2023",
+                    "Building Exterior Type: Hardiplank",
+                    "Construction Materials: Frame",
+                    "Foundation Details: Slab",
+                    "New Construction: Yes",
+                    "Roof: Composition",
+                    "Levels or Stories: 1.0",
+                    "Total Area Sqft: 1947",
+                    "Year Built Details: New"
+                ]
+            },
+            {
+                "category": "Utilities",
+                "parent_category": "Features",
+                "text": [
+                    "Sewer: Public Sewer, Public Water",
+                    "Elec: City, Gas: Atmos"
+                ]
+            },
+            {
+                "category": "Home Features",
+                "parent_category": "Features",
+                "text": [
+                    "Other Equipment: Cable Ready, Carbon Monoxide Detectors, Ceiling Fans, Garage Door Opener, Garden Tub, Smoke Detector"
+                ]
+            }
+        ],
+        "href": "https://www.realtor.com/realestateandhomes-detail/507-Flores-Ct_Lafayette_LA_70507_M95730-95159",
+        "last_sold_date": null,
+        "last_sold_price": null,
+        "list_date": "2023-11-03T14:15:54Z",
+        "list_price": 279999,
+        "last_price_change_amount": null,
+        "listing_id": "2961328303",
+        "local": {
+            "flood": {
+                "flood_factor_severity": "minimal",
+                "flood_trend": "This property’s flood risk is not changing."
+            },
+            "wildfire": {
+                "fire_factor_severity": "Minimal",
+                "fire_trend": "This property’s wildfire risk is not changing."
+            },
+            "noise": {
+                "score": 82,
+                "noise_categories": [
+                    {
+                        "text": "Low",
+                        "type": "airport"
+                    },
+                    {
+                        "text": "Low",
+                        "type": "traffic"
+                    },
+                    {
+                        "text": "Low",
+                        "type": "local"
+                    },
+                    {
+                        "text": "Low",
+                        "type": "score"
+                    }
+                ]
+            }
+        },
+        "location": {
+            "street_view_url": "https://maps.googleapis.com/maps/api/streetview?channel=rdc-streetview&client=gme-movesalesinc&location=507%20Flores%20Ct%2C%20Lafayette%2C%20LA%2070507&size=932x420&source=outdoor&signature=iP_vfl4zEEKQp9uCrEv7H1-HEhM=",
+            "street_view_metadata_url": "https://maps.googleapis.com/maps/api/streetview/metadata?channel=rdc-streetview&client=gme-movesalesinc&location=507%20Flores%20Ct%2C%20Lafayette%2C%20LA%2070507&size=640x480&source=outdoor&signature=5cKol_7VOjcptUl_cA52TZaL-IA=",
+            "address": {
+                "city": "Lafayette",
+                "coordinate": {
+                    "lat": 30.269253,
+                    "lon": -92.026078
+                },
+                "country": "USA",
+                "line": "507 Flores Ct",
+                "postal_code": "70507",
+                "state": "Louisiana",
+                "state_code": "LA",
+                "street_direction": null,
+                "street_name": "Flores",
+                "street_number": "507",
+                "street_post_direction": null,
+                "street_suffix": "Ct",
+                "unit": null,
+                "validation_code": "190"
+            },
+            "county": {
+                "fips_code": "22055",
+                "name": "Lafayette",
+                "state_code": "LA"
+            },
+            "neighborhoods": null,
+            "search_areas": [
+                {
+                    "city": "lafayette",
+                    "state_code": "la"
+                }
+            ],
+            "city": {
+                "county_needed_for_uniq": false,
+                "slug_id": "Lafayette_LA"
+            },
+            "postal_code": {
+                "geo_statistics": {
+                    "housing_market": {
+                        "hot_market_badge": "Other"
+                    }
+                }
+            }
+        },
+        "open_houses": null,
+        "nearby_schools": {
+            "schools": [
+                {
+                    "coordinate": {
+                        "lat": 30.287102,
+                        "lon": -92.041166
+                    },
+                    "distance_in_miles": 1.5,
+                    "district": {
+                        "id": "06174286241",
+                        "name": "Lafayette Parish School District"
+                    },
+                    "education_levels": [
+                        "high"
+                    ],
+                    "funding_type": "public",
+                    "grades": [
+                        "9",
+                        "10",
+                        "11",
+                        "12"
+                    ],
+                    "greatschools_id": "2200659",
+                    "id": "0731437961",
+                    "name": "Carencro High School",
+                    "nces_code": "220087000668",
+                    "parent_rating": 5,
+                    "rating": 4,
+                    "review_count": 1,
+                    "slug_id": "Carencro-High-School-0731437961",
+                    "student_count": 1139
+                },
+                {
+                    "coordinate": {
+                        "lat": 30.286536,
+                        "lon": -92.048437
+                    },
+                    "distance_in_miles": 1.8,
+                    "district": {
+                        "id": "06174286241",
+                        "name": "Lafayette Parish School District"
+                    },
+                    "education_levels": [
+                        "elementary"
+                    ],
+                    "funding_type": "public",
+                    "grades": [
+                        "K",
+                        "1",
+                        "2",
+                        "3",
+                        "4",
+                        "5"
+                    ],
+                    "greatschools_id": "2201395",
+                    "id": "0731448501",
+                    "name": "Live Oak Elementary School",
+                    "nces_code": "220087001176",
+                    "parent_rating": 3,
+                    "rating": 4,
+                    "review_count": 2,
+                    "slug_id": "Live-Oak-Elementary-School-0731448501",
+                    "student_count": 584
+                },
+                {
+                    "coordinate": {
+                        "lat": 30.31655,
+                        "lon": -92.050275
+                    },
+                    "distance_in_miles": 3.6,
+                    "district": {
+                        "id": "06174286241",
+                        "name": "Lafayette Parish School District"
+                    },
+                    "education_levels": [
+                        "elementary",
+                        "middle"
+                    ],
+                    "funding_type": "public",
+                    "grades": [
+                        "5",
+                        "6",
+                        "7",
+                        "8"
+                    ],
+                    "greatschools_id": "2200657",
+                    "id": "0731437941",
+                    "name": "Carencro Middle School",
+                    "nces_code": "220087000666",
+                    "parent_rating": 3,
+                    "rating": 6,
+                    "review_count": 7,
+                    "slug_id": "Carencro-Middle-School-0731437941",
+                    "student_count": 629
+                },
+                {
+                    "coordinate": {
+                        "lat": 30.255692,
+                        "lon": -92.031677
+                    },
+                    "distance_in_miles": 1,
+                    "district": {
+                        "id": "06174285711",
+                        "name": null
+                    },
+                    "education_levels": [
+                        "elementary",
+                        "middle",
+                        "high"
+                    ],
+                    "funding_type": "private",
+                    "grades": [
+                        "PK",
+                        "K",
+                        "1",
+                        "2",
+                        "3",
+                        "4",
+                        "5",
+                        "6",
+                        "7",
+                        "8",
+                        "9",
+                        "10",
+                        "11",
+                        "12"
+                    ],
+                    "greatschools_id": "2205497",
+                    "id": "0731507101",
+                    "name": "Lafayette Christian Academy",
+                    "nces_code": "A1701875",
+                    "parent_rating": null,
+                    "rating": null,
+                    "review_count": 0,
+                    "slug_id": "Lafayette-Christian-Academy-0731507101",
+                    "student_count": 1160
+                }
+            ]
+        },
+        "permalink": "507-Flores-Ct_Lafayette_LA_70507_M95730-95159",
+        "photo_count": 6,
+        "photos": [
+            {
+                "title": null,
+                "description": null,
+                "href": "http://ap.rdcpix.com/86cdf21ccbf1c3413deb0e226bbb7381l-m1253509233s.jpg",
+                "type": "realtordotcom_mls_listing_image",
+                "tags": [
+                    {
+                        "label": "house_view",
+                        "probability": 0.9984684586524963
+                    },
+                    {
+                        "label": "porch",
+                        "probability": 0.9930938482284546
+                    },
+                    {
+                        "label": "yard",
+                        "probability": 0.9984336495399475
+                    },
+                    {
+                        "label": "complete",
+                        "probability": 0.9895618557929993
+                    },
+                    {
+                        "label": "front",
+                        "probability": 0.9674303531646729
+                    }
+                ]
+            },
+            {
+                "title": null,
+                "description": null,
+                "href": "http://ap.rdcpix.com/86cdf21ccbf1c3413deb0e226bbb7381l-m4147828592s.jpg",
+                "type": "realtordotcom_mls_listing_image",
+                "tags": [
+                    {
+                        "label": "floor_plan",
+                        "probability": 0.9999665021896362
+                    }
+                ]
+            },
+            {
+                "title": null,
+                "description": null,
+                "href": "http://ap.rdcpix.com/86cdf21ccbf1c3413deb0e226bbb7381l-m495509010s.jpg",
+                "type": "realtordotcom_mls_listing_image",
+                "tags": [
+                    {
+                        "label": "swimming_pool",
+                        "probability": 0.9883091449737549
+                    }
+                ]
+            },
+            {
+                "title": null,
+                "description": null,
+                "href": "http://ap.rdcpix.com/86cdf21ccbf1c3413deb0e226bbb7381l-m1710837931s.jpg",
+                "type": "realtordotcom_mls_listing_image",
+                "tags": [
+                    {
+                        "label": "porch",
+                        "probability": 0.7278667688369751
+                    },
+                    {
+                        "label": "yard",
+                        "probability": 0.965594470500946
+                    }
+                ]
+            },
+            {
+                "title": null,
+                "description": null,
+                "href": "http://ap.rdcpix.com/86cdf21ccbf1c3413deb0e226bbb7381l-m3375239177s.jpg",
+                "type": "realtordotcom_mls_listing_image",
+                "tags": [
+                    {
+                        "label": "swimming_pool",
+                        "probability": 0.9986757636070251
+                    }
+                ]
+            },
+            {
+                "title": null,
+                "description": null,
+                "href": "http://ap.rdcpix.com/86cdf21ccbf1c3413deb0e226bbb7381l-m3302652044s.jpg",
+                "type": "realtordotcom_mls_listing_image",
+                "tags": [
+                    {
+                        "label": "house_view",
+                        "probability": 0.989496648311615
+                    },
+                    {
+                        "label": "porch",
+                        "probability": 0.9996501207351685
+                    },
+                    {
+                        "label": "yard",
+                        "probability": 0.992520809173584
+                    },
+                    {
+                        "label": "back_side",
+                        "probability": 0.9977481961250305
+                    },
+                    {
+                        "label": "complete",
+                        "probability": 0.9380086660385132
+                    }
+                ]
+            }
+        ],
+        "price_per_sqft": 208,
+        "primary_photo": {
+            "href": "http://ap.rdcpix.com/86cdf21ccbf1c3413deb0e226bbb7381l-m1253509233s.jpg"
+        },
+        "hoa": {
+            "fee": 49
+        },
+        "tax_history": null
+    }
+}

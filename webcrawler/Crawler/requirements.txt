@@ -1,0 +1,11 @@
+beautifulsoup4==4.12.2
+certifi==2023.7.22
+chardet==3.0.4
+dataclass-wizard==0.22.2
+idna==2.7
+lxml==4.9.3
+powerline-status==2.7
+psycopg2-binary==2.9.7
+requests==2.20.0
+soupsieve==2.5
+urllib3==1.24.3
