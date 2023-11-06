@@ -15,7 +15,7 @@ class Scheduler(object):
             try:
                 for website, cls in TESTER_MAP.items():
                     tester = eval(cls)
-                    testet(website=website).run()
+                    tester(website=website).run()
                     print('Cookies检测完成')
                     del tester
                     time.sleep(cycle)
