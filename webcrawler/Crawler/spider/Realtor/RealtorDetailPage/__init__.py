@@ -17,29 +17,27 @@ class RealtorDetailPage:
         detailProperty = nextJson.get("props", {}).get("pageProps", {}).get("initialReduxState", {}).get("propertyDetails", {})
         address = detailProperty.get("location", {}).get("address", {})
         description = detailProperty.get("description", {})
-        days_on_market = getFirstOne(html.xpath('//*[@id="__next"]/div/div[1]/div[6]/div[4]/div[1]/div[2]/div[4]/div[1]/div[4]/ul/li[2]/div/div[2]/text()'), "-1").replace('day', '')
+        days_on_market = getFirstOne(html.xpath('//*[@id="__next"]/div/div[1]/div[6]/div[4]/div[1]/div[2]/div[4]/div[1]/div[4]/ul/li[2]/div/div[2]/text()'), "-1").split(" ")[0]
         photos = [p["href"] for p in detailProperty.get("photos", [])]
-        return RealtorDetailPageModel(**{
-            "property_id": "AUTO_GENERATED",
-            "name": "unknown",
-            "street_address": street_address,
-            "city": address.get("city", ""),
-            "state": address.get("state", ""),
-            "zipcode": address.get("postal_code", ""),
-            "property_type": description.get("type", ""),
-            "num_beds": description.get("beds", -1),
-            "num_baths": description.get("baths", -1),
-            "sq_ft": description.get("sqft", -1),
-            "sq_ft_lot": description.get("lot_sqft", -1),
-            "purchase_price": detailProperty.get("list_price", -1),
-            "estimated_rental_price": -1,
-            "image_links": photos,
-            "time_on_market": int(days_on_market),
-            "date_first_on_market": "2023-10-29T23:58:35.656704",
-            "year_built": description.get("year_built", -1),
-            "garage": description.get("garage", -1),
-            "description": description.get("text", "")
-        })
+        return RealtorDetailPageModel(
+            street_address=street_address,
+            city=address.get("city", ""),
+            state=address.get("state", ""),
+            zipcode=address.get("postal_code", ""),
+            property_type=description.get("type", ""),
+            num_beds=description.get("beds", -1),
+            num_baths=description.get("baths", -1),
+            sq_ft=description.get("sqft", -1),
+            sq_ft_lot=description.get("lot_sqft", -1),
+            purchase_price=detailProperty.get("list_price", -1),
+            estimated_rental_price=-1,
+            image_links=photos,
+            time_on_market=int(days_on_market),
+            date_first_on_market="2023-10-29T23:58:35.656704",
+            year_built=description.get("year_built", -1),
+            garage=description.get("garage", -1),
+            description=description.get("text", "")
+        )
 
     def start(self, url):
         headers = {

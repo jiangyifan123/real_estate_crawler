@@ -4,6 +4,8 @@ from selenium.webdriver import DesiredCapabilities
 from cookiespool.config import *
 from cookiespool.db import RedisClient
 from login.weibo.cookies import WeiboCookies
+from login.realtor.cookies import RealtorCookies
+from login.zillow.cookies import ZillowCookies
 
 
 class CookiesGenerator(object):
@@ -114,8 +116,29 @@ class WeiboCookiesGenerator(CookiesGenerator):
         :param password: 密码
         :return: 用户名和Cookies
         """
-        return WeiboCookies(username, password, self.browser).main()
+        return RealtorCookies(username, password, self.browser).main()
 
+
+class ZillowCookiesGenerator(CookiesGenerator):
+    def new_cookies(self, username, password):
+        """
+        生成Cookies
+        :param username: 用户名
+        :param password: 密码
+        :return: 用户名和Cookies
+        """
+        return ZillowCookies(username, password, self.browser).main()
+
+
+class RealtorCookiesGenerator(CookiesGenerator):
+    def new_cookies(self, username, password):
+        """
+        生成Cookies
+        :param username: 用户名
+        :param password: 密码
+        :return: 用户名和Cookies
+        """
+        return WeiboCookies(username, password, self.browser).main()
 
 if __name__ == '__main__':
     generator = WeiboCookiesGenerator()

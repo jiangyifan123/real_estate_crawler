@@ -36,15 +36,17 @@ class Scheduler(object):
             except Exception as e:
                 print(e.args)
     
-    def run(self):
-        if API_PROCESS:
-            print('API接口开始运行')
-            start_api()
-        
+    def run(self):        
         if GENERATOR_PROCESS:
+            print("set up cookie process")
             generate_process = Process(target=Scheduler.generate_cookie)
             generate_process.start()
         
         if VALID_PROCESS:
+            print('set up valid process')
             valid_process = Process(target=Scheduler.valid_cookie)
             valid_process.start()
+        
+        if API_PROCESS:
+            print('API接口开始运行')
+            start_api()
