@@ -12,16 +12,18 @@ BROWSER_TYPE = 'Chrome'
 
 # 产生器类，如扩展其他站点，请在此配置
 GENERATOR_MAP = {
-    'weibo': 'WeiboCookiesGenerator'
+    # 'weibo': 'WeiboCookiesGenerator',
+    # 'zillow': 'ZillowCookiesGenerator',
+    'realtor': 'RealtorCookiesGenerator',
 }
 
 # 测试类，如扩展其他站点，请在此配置
 TESTER_MAP = {
-    'weibo': 'WeiboValidTester'
+    # 'weibo': 'WeiboValidTester'
 }
 
 TEST_URL_MAP = {
-    'weibo': 'https://m.weibo.cn/'
+    # 'weibo': 'https://m.weibo.cn/'
 }
 
 # 产生器和验证器循环周期

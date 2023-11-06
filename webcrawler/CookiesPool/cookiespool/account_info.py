@@ -14,3 +14,6 @@ accountInfo = {
         "yivas90089@othao.com": "Nimbus_nova@123456",
     }
 }
+
+def getAccountInfo(website=""):
+    return accountInfo.get(website, {})

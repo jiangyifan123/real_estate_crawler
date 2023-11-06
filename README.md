@@ -14,3 +14,6 @@ pip3 install -r requirements.txt
 ```
 
 run the main.py
+
+
+# CookiesPool

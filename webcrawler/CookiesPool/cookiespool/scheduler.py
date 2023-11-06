@@ -14,11 +14,12 @@ class Scheduler(object):
             print('Cookies检测进程开始运行')
             try:
                 for website, cls in TESTER_MAP.items():
-                    tester = eval(cls + '(website="' + website + '")')
-                    tester.run()
+                    tester = eval(cls)
+                    testet(website=website).run()
                     print('Cookies检测完成')
                     del tester
                     time.sleep(cycle)
+                time.sleep(cycle)
             except Exception as e:
                 print(e.args)
     
@@ -28,11 +29,12 @@ class Scheduler(object):
             print('Cookies生成进程开始运行')
             try:
                 for website, cls in GENERATOR_MAP.items():
-                    generator = eval(cls + '(website="' + website + '")')
-                    generator.run()
+                    generator = eval(cls)
+                    generator(website=website).run()
                     print('Cookies生成完成')
                     generator.close()
                     time.sleep(cycle)
+                time.sleep(cycle)
             except Exception as e:
                 print(e.args)
     

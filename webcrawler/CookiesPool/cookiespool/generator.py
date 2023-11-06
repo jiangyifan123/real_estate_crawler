@@ -138,7 +138,7 @@ class RealtorCookiesGenerator(CookiesGenerator):
         :param password: 密码
         :return: 用户名和Cookies
         """
-        return WeiboCookies(username, password, self.browser).main()
+        return RealtorCookies(username, password, self.browser).main()
 
 if __name__ == '__main__':
     generator = WeiboCookiesGenerator()
