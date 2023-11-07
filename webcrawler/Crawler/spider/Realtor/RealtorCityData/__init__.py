@@ -10,6 +10,7 @@ class RealtorCityData:
         URL = urlparse(url)
         html = etree.HTML(response.content)
         urls = html.xpath('//a[contains(@class, "LinkComponent_anchor__0C2xC")]/@href')
+        urls = [URL._replace(path=detailUrl).geturl() for detailUrl in urls]
         next_button = html.xpath('//a[contains(@class, "next-link")]/@href')
         if next_button is not None and len(next_button) > 0:
             next_data = self.start(URL._replace(path=next_button[0]).geturl())
@@ -19,7 +20,7 @@ class RealtorCityData:
         })
 
     def start(self, url):
-        response = request("GET", url)
+        response = request("GET", url, cookieKey='realtor')
         return self.parse(url, response)
     
 if __name__ == "__main__":
