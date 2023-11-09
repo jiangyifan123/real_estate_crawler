@@ -6,6 +6,7 @@ from cookiespool.db import RedisClient
 from login.weibo.cookies import WeiboCookies
 from login.realtor.cookies import RealtorCookies
 from login.zillow.cookies import ZillowCookies
+from seleniumbase import Driver
 
 
 class CookiesGenerator(object):
@@ -35,7 +36,7 @@ class CookiesGenerator(object):
             self.browser = webdriver.PhantomJS(desired_capabilities=caps)
             self.browser.set_window_size(1400, 500)
         elif BROWSER_TYPE == 'Chrome':
-            self.browser = webdriver.Chrome()
+            self.browser = Driver(uc=True)
     
     def new_cookies(self, username, password):
         """
