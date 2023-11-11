@@ -36,7 +36,7 @@ class CookiesGenerator(object):
             self.browser = webdriver.PhantomJS(desired_capabilities=caps)
             self.browser.set_window_size(1400, 500)
         elif BROWSER_TYPE == 'Chrome':
-            self.browser = Driver(uc=True)
+            self.browser = Driver(uc=True, disable_ws=True)
     
     def new_cookies(self, username, password):
         """

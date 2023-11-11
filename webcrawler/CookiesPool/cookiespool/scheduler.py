@@ -19,7 +19,7 @@ class Scheduler(object):
                     print('Cookies检测完成')
                     del tester
                     time.sleep(cycle)
-                time.sleep(cycle)
+                time.sleep(10)
             except Exception as e:
                 print(e.args)
     
@@ -34,7 +34,7 @@ class Scheduler(object):
                     print('Cookies生成完成')
                     generator.close()
                     time.sleep(cycle)
-                time.sleep(cycle)
+                time.sleep(10)
             except Exception as e:
                 print(e.args)
     
