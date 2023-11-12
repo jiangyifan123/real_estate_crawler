@@ -1,8 +1,7 @@
 from spider.Realtor.RealtorSuggest import RealtorSuggest
 from spider.Realtor.RealtorCityData import RealtorCityData
 from spider.Realtor.RealtorDetailPage import RealtorDetailPage
-from database.model.PropertyModel import PropertyModel
-from database.Properties import updateProperty
+from database.crud import update_property
 from spiderTask import SpiderTask
 import time
 
@@ -30,7 +29,7 @@ class RealtorSpiderTask(SpiderTask):
             model = RealtorCityData().start(url)
             for detailUrl in model.urls:
                 time.sleep(2)
-                updateProperty(RealtorDetailPage().start(detailUrl))
+                update_property(RealtorDetailPage().start(detailUrl))
 
     def run(self):
         # print(RealtorCityData().start("https://www.realtor.com/realestateandhomes-search/Lafayette_LA/sby-1"))

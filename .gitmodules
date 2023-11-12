@@ -1,0 +1,3 @@
+[submodule "webcrawler/Crawler/real_estate_app_api"]
+	path = webcrawler/Crawler/real_estate_app_api
+	url = https://github.com/nimbus-nova/real_estate_app_api.git

@@ -26,7 +26,6 @@ class RealtorCookies():
         try:
             self.browser.delete_all_cookies()
             self.browser.get(self.url)
-            time.sleep(3)
         except Exception as e:
             print('timeout waiting')
     
@@ -122,17 +121,16 @@ class RealtorCookies():
         while count > 0 and self.pass_bot_verify():
             count -= 1
             self.loginFlow()
-        
-        if self.password_error():
-            return {
-                'status': 2,
-                'content': '用户名或密码错误'
-            }
         if self.login_successfully():
             cookies = self.browser.get_cookies()
             return {
                 'status': 1,
                 'content': cookies
+            }
+        if self.password_error():
+            return {
+                'status': 2,
+                'content': '用户名或密码错误'
             }
         return {
             'status': 10,
@@ -141,5 +139,5 @@ class RealtorCookies():
         
 
 if __name__ == "__main__":
-    driver = Driver(uc=True, disable_ws=True)
-    print(RealtorCookies("serel33664@othao.com", "Nimbus_nova@123456", driver).main())
+    driver = Driver(uc=True, disable_ws=True, devtools=True)
+    print(RealtorCookies("pixime9052@othao.com", "Nimbus_nova@123456", driver).main())

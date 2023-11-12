@@ -1,0 +1,1 @@
+from real_estate_app_api.app.database.schemas.schemas import *
