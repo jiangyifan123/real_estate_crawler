@@ -6,27 +6,29 @@ from database.crud import upsert_property
 from spiderTask import SpiderTask
 import time
 
-zipcodes = [
-    "90013",
-    "11354",
-    "08861",
-    "07093",
-    "07107"
-]
+def getUrlByZipcode(zipcode):
+    return f"https://www.realtor.com/realestateandhomes-search/{zipcode}"
 
 class RealtorSpiderTask(SpiderTask):
+    def __init__(self):
+        super(RealtorSpiderTask, self).__init__()
+        self.zipcodes = [
+            "90013",
+            "11354",
+            "08861",
+            "07093",
+            "07107"
+        ]
+
     def key(self):
         return "realtor_spider_test"
 
     def description(self):
         return "realtor spider"
-    
-    def getUrlByZipcode(self, zipcode):
-        return f"https://www.realtor.com/realestateandhomes-search/{zipcode}"
 
     def getByZipcode(self):
-        for zipcode in zipcodes:
-            url = self.getUrlByZipcode(zipcode)
+        for zipcode in self.zipcodes:
+            url = getUrlByZipcode(zipcode)
             model = RealtorCityData().start(url)
             for detailUrl in model.urls:
                 time.sleep(2)
