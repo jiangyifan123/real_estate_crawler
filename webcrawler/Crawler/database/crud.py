@@ -5,7 +5,6 @@ from database.postgres_db import SessionLocal
 import hashlib
 from sqlalchemy.dialects.postgresql import insert
 
-
 def upsert_property(
     property_info_model: models.PropertyInfo
 ) -> models.PropertyInfo:
@@ -20,6 +19,7 @@ def upsert_property(
         set_=property_dict
     )
     db.execute(stmt)
+    print(property_info_model)
     return property_info_model
 
 

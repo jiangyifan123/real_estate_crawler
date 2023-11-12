@@ -1,6 +1,7 @@
 from spider.Realtor.RealtorSuggest import RealtorSuggest
 from spider.Realtor.RealtorCityData import RealtorCityData
 from spider.Realtor.RealtorDetailPage import RealtorDetailPage
+from spider.RentCast.RentData import RentData
 from database.crud import upsert_property
 from spiderTask import SpiderTask
 import time
@@ -29,7 +30,9 @@ class RealtorSpiderTask(SpiderTask):
             model = RealtorCityData().start(url)
             for detailUrl in model.urls:
                 time.sleep(2)
-                print(upsert_property(RealtorDetailPage().start(detailUrl)))
+                detailModel = RealtorDetailPage().start(detailUrl)
+                detailModel.rent_zestimate = RentData().start(detailModel.address).rent_estimate
+                upsert_property(detailModel)
 
     def run(self):
         # print(RealtorCityData().start("https://www.realtor.com/realestateandhomes-search/Lafayette_LA/sby-1"))

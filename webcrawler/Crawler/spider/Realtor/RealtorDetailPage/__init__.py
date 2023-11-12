@@ -5,7 +5,7 @@ import json
 from utils.Tools import getFirstOne, getJsonValueFromPath
 
 class RealtorDetailPage:
-    def parse(self, url, response):
+    def parse(self, url, response) -> RealtorDetailPageModel:
         if response is None:
             return RealtorDetailPageModel()
         html = etree.HTML(response.content)
@@ -48,7 +48,7 @@ class RealtorDetailPage:
             rent_zestimate=0
         )
 
-    def start(self, url):
+    def start(self, url) -> RealtorDetailPageModel:
         response = request("GET", url, cookieKey='realtor')
         return self.parse(url, response)
 
