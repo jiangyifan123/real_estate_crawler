@@ -1,3 +1,2 @@
-from database import models
-
-RealtorDetailPageModel = models.PropertyInfo
+from models.models.database.property_info import PropertyInfo 
+RealtorDetailPageModel = PropertyInfo
