@@ -2,7 +2,7 @@ from spider.Realtor.RealtorSuggest import RealtorSuggest
 from spider.Realtor.RealtorCityData import RealtorCityData
 from spider.Realtor.RealtorDetailPage import RealtorDetailPage
 from spider.RentCast.RentData import RentData
-from database.crud import upsert_property, get_all_properties
+from database.crud import upsert_property, get_all_property
 from spiderTask import SpiderTask
 import time
 
@@ -37,7 +37,7 @@ class RealtorSpiderTask(SpiderTask):
                 upsert_property(detailModel)
     
     def getProperty(self):
-        for p in get_all_properties():
+        for p in get_all_property():
             if p.rent_zestimate is not None and p.rent_zestimate > 0:
                 continue
             rent_zestimate = RentData().start(p.address).rent_estimate

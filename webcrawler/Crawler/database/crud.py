@@ -14,9 +14,14 @@ def get_property_by_id(property_id: str) -> PropertyInfoModelDB:
     )
 
 
-def get_all_properties(page_num=0, page_size=50) -> List[PropertyInfoModelDB]:
+def get_properties_page(page_num=0, page_size=50) -> List[PropertyInfoModelDB]:
     db = next(get_postgres_db())
     return db.query(PropertyInfoModelDB).offset(page_num * page_size).limit(page_size)
+
+
+def get_all_property() -> List[PropertyInfoModelDB]:
+    db = next(get_postgres_db())
+    return db.query(PropertyInfoModelDB).all()
 
 
 def get_property(property_id=0):

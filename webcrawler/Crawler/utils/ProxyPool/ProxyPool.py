@@ -27,10 +27,8 @@ def requestWithProxy(method, url, headers, data) -> requests.Response:
     # ....
     retry_count = 5
     proxy = get_proxy().get("proxy")
-    print(f'get {proxy}')
     while retry_count > 0:
         try:
-            print(f'request time {retry_count}')
             html = requests.request(method, url, headers=headers, data=data,
                                     proxies={"http": "http://{}".format(proxy), "https": "http://{}".format(proxy)}, timeout=5)
             # 使用代理访问
@@ -41,4 +39,5 @@ def requestWithProxy(method, url, headers, data) -> requests.Response:
     delete_proxy(proxy)
     response = requests.Response()
     response.status_code == 500
+    print(f'get {url} fail')
     return response
