@@ -40,5 +40,5 @@ class RentData:
 
     def start(self, address) -> RentDataModel:
         url = self.getUrl(address)
-        response = request("GET", url)
+        response = request("GET", url, tryCount=1)
         return self.parse(response)

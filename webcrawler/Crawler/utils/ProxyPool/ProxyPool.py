@@ -1,5 +1,6 @@
 import requests
 import socket
+import logging
 
 proxyPoolHost = "https://proxy.andyfanfan.myds.me"
 internal_host = "http://192.168.1.112:5010"
@@ -11,7 +12,7 @@ internal = True
 
 def get_proxy():
     host = internal_host if internal else proxyPoolHost
-    return requests.get("{}/get/".format(host)).json()
+    return requests.get("{}/get?type=https".format(host)).json()
 
 
 def delete_proxy(proxy):
@@ -26,10 +27,12 @@ def requestWithProxy(method, url, headers, data) -> requests.Response:
     # ....
     retry_count = 5
     proxy = get_proxy().get("proxy")
+    print(f'get {proxy}')
     while retry_count > 0:
         try:
+            print(f'request time {retry_count}')
             html = requests.request(method, url, headers=headers, data=data,
-                                    proxies={"http": "http://{}".format(proxy)})
+                                    proxies={"http": "http://{}".format(proxy), "https": "http://{}".format(proxy)}, timeout=5)
             # 使用代理访问
             return html
         except Exception:
