@@ -18,8 +18,8 @@ def upsert_property(
         index_elements=["property_id",],
         set_=property_dict
     )
-    db.execute(stmt)
-    print(property_info_db_model.property_id)
+    r = db.execute(stmt)
+    print(f"id: {property_info_db_model.property_id} row: {r.rowcount}")
     return property_info_db_model
 
 
