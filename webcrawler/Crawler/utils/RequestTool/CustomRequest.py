@@ -3,7 +3,7 @@ from utils.UserAgent.UserAgentTools import random_user_agent
 from utils.CookiePool.CookiePool import getCookie
 import requests
 
-def request(method, url, headers={}, data={}, cookieKey="", tryCount=100):
+def request(method, url, headers={}, data={}, cookieKey="", tryCount=10):
     if tryCount <= 0:
         return None
     headers['user-agent'] = random_user_agent()
