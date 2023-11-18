@@ -44,7 +44,7 @@ def upsert_property(
     property_dict = dict(property_info_db_model.__dict__)
     property_dict.pop('_sa_instance_state', None)
     property_dict.pop('id', None)
-    property_dict = {(k, v) for k, v in property_dict.items() if v is not None}
+    property_dict = {k: v for k, v in property_dict.items() if v is not None}
     stmt = postgresql.insert(PropertyInfoModelDB).values(**property_dict)
     stmt = stmt.on_conflict_do_update(
         index_elements=["property_id",],
