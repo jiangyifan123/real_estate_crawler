@@ -14,6 +14,10 @@ def get_property_by_id(property_id: str) -> PropertyInfoModelDB:
     )
 
 
+def check_property(property: PropertyInfoModelDB) -> bool:
+    return get_property_by_id(hashID(property)) is not None
+
+
 def get_properties_page(page_num=0, page_size=50) -> List[PropertyInfoModelDB]:
     db = next(get_postgres_db())
     return db.query(PropertyInfoModelDB).offset(page_num * page_size).limit(page_size)
@@ -34,12 +38,13 @@ def upsert_property(
 ) -> PropertyInfoModelDB:
     db = next(get_postgres_db())
     # if not, create new property
-    
-    property_info_db_model.property_id = hashID(property_info_db_model)
+    if property_info_db_model.property_id is None or property_info_db_model.property_id == 0:
+        property_info_db_model.property_id = hashID(property_info_db_model)
 
     property_dict = dict(property_info_db_model.__dict__)
     property_dict.pop('_sa_instance_state', None)
     property_dict.pop('id', None)
+    property_dict = {(k, v) for k, v in property_dict.items() if v is not None}
     stmt = postgresql.insert(PropertyInfoModelDB).values(**property_dict)
     stmt = stmt.on_conflict_do_update(
         index_elements=["property_id",],
@@ -57,6 +62,7 @@ def get_postgres_db():
         yield db
     finally:
         db.close()
+
 
 def hashID(model: PropertyInfoModelDB):
     return hashlib.sha256((model.address + model.city + model.state + str(model.zipcode) + model.property_type).encode('utf-8')).hexdigest()

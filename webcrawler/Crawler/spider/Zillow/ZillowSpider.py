@@ -36,9 +36,11 @@ def getEstateByFuzzySearch(searchText):
 
 
 class ZillowSpiderTask(SpiderTask):
+    @classmethod
     def key(self):
         return "zillow_spider_test"
 
+    @classmethod
     def description(self):
         return "zillow spider"
 
