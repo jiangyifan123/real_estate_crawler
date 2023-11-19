@@ -2,7 +2,7 @@ from spider.Realtor.RealtorSuggest import RealtorSuggest
 from spider.Realtor.RealtorCityData import RealtorCityData
 from spider.Realtor.RealtorDetailPage import RealtorDetailPage
 from spider.RentCast.RentData import RentData
-from database.crud import upsert_property, get_all_property
+from database.crud import upsert_property, check_property
 from spiderTask import SpiderTask
 import time
 
@@ -34,10 +34,12 @@ class RealtorSpiderTask(SpiderTask):
     def getByZipcode(self):
         for zipcode in self.zipcodes:
             url = getUrlByZipcode(zipcode)
-            model = RealtorCityData().start(url)
-            for detailUrl in model.urls:
-                detailModel = RealtorDetailPage().start(detailUrl)
-                detailModel.rent_zestimate = RentData().start(detailModel.address).rent_estimate
+            model_list = RealtorCityData().start(url).model_list
+            for model in model_list:
+                if check_property(model):
+                    continue
+                detailModel = RealtorDetailPage().start(model.url)
+                detailModel.rent_zestimate = RentData().start(model.address).rent_estimate
                 upsert_property(detailModel)
 
     def run(self):
@@ -63,14 +65,15 @@ class RealtorSpiderTask_update_by_city(SpiderTask):
     def getByCity(self):
         for city in self.cities:
             url = getCityUrl(city)
-            model = RealtorCityData().start(url)
-            for detailUrl in model.urls:
-                detailModel = RealtorDetailPage().start(detailUrl)
-                detailModel.rent_zestimate = RentData().start(detailModel.address).rent_estimate
+            model_list = RealtorCityData().start(url).model_list
+            for model in model_list:
+                if check_property(model):
+                    continue
+                detailModel = RealtorDetailPage().start(model.url)
+                detailModel.rent_zestimate = RentData().start(model.address).rent_estimate
                 upsert_property(detailModel)
 
     def run(self):
-        # print(RealtorCityData().start("https://www.realtor.com/realestateandhomes-search/Lafayette_LA/sby-1"))
         self.getByCity()
 
 
@@ -93,15 +96,10 @@ class RealtorSpiderTask_Update_Property(SpiderTask):
     def description(self):
         return "realtor spider update property"
 
-    def getByZipcode(self):
+    def checkProperty(self):
         for zipcode in self.zipcodes:
             url = getUrlByZipcode(zipcode)
             model = RealtorCityData().start(url)
-            for detailUrl in model.urls:
-                detailModel = RealtorDetailPage().start(detailUrl)
-                detailModel.rent_zestimate = RentData().start(detailModel.address).rent_estimate
-                upsert_property(detailModel)
 
     def run(self):
-        # print(RealtorCityData().start("https://www.realtor.com/realestateandhomes-search/Lafayette_LA/sby-1"))
-        self.getByZipcode()
+        self.checkProperty()

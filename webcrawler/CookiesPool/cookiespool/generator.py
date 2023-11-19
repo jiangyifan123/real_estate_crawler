@@ -94,8 +94,9 @@ class CookiesGenerator(object):
         """
         try:
             print('Closing Browser')
-            self.browser.close()
-            del self.browser
+            if self.browser is not None:
+                self.browser.close()
+                del self.browser
         except TypeError:
             print('Browser not opened')
 

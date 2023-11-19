@@ -10,10 +10,13 @@ LocalIP = socket.gethostbyname(hostname)
 use_proxy = True
 internal = True
 
-def get_proxy():
+def get_https_proxy():
     host = internal_host if internal else proxyPoolHost
     return requests.get("{}/get?type=https".format(host)).json()
 
+def get_http_proxy():
+    host = internal_host if internal else proxyPoolHost
+    return requests.get("{}/get".format(host)).json()
 
 def delete_proxy(proxy):
     print('delete proxy: {}'.format(proxy))
@@ -21,16 +24,20 @@ def delete_proxy(proxy):
     requests.get("{}/delete/?proxy={}".
                  format(host, proxy))
 
-def requestWithProxy(method, url, headers, data) -> requests.Response:
+def requestWithProxy(method, url, headers, data, useHttps=True) -> requests.Response:
     if not use_proxy:
         return requests.request(method, url, headers=headers, data=data)
     # ....
     retry_count = 5
-    proxy = get_proxy().get("proxy")
+    if useHttps:
+        proxy = get_https_proxy().get("proxy")
+        proxies = {"http": f"http://{proxy}", "https": f"http://{proxy}"}
+    else:
+        proxy = get_http_proxy().get("proxy")
+        proxies = {"http": f"http://{proxy}"}
     while retry_count > 0:
         try:
-            html = requests.request(method, url, headers=headers, data=data,
-                                    proxies={"http": "http://{}".format(proxy), "https": "http://{}".format(proxy)}, timeout=5)
+            html = requests.request(method, url, headers=headers, data=data, proxies=proxies, timeout=5)
             # 使用代理访问
             return html
         except Exception:

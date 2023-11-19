@@ -42,7 +42,7 @@ def random(website: str):
     """
     g = conn.get_conn()
     cookies = getattr(g, website + '_cookies').random()
-    return cookies
+    return json.loads(cookies)
 
 
 @app.get('/{website}/add/{username}/{password}')

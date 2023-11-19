@@ -14,6 +14,8 @@ class RentCastSpiderTask(SpiderTask):
         return "update database rent by address"
 
     def choosePriorityAddress(self, model: PropertyInfo, address_list: list[str]) -> str:
+        if model.city is None:
+            return address_list[0]
         for address in address_list:
             if model.city in address and model.address in address:
                 return address

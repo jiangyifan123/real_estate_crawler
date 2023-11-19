@@ -30,9 +30,10 @@ class Scheduler(object):
             try:
                 for website, cls in GENERATOR_MAP.items():
                     generator = eval(cls)
-                    generator(website=website).run()
+                    task = generator(website=website)
+                    task.run()
                     print('Cookies生成完成')
-                    generator.close()
+                    task.close()
                     time.sleep(cycle)
                 time.sleep(10)
             except Exception as e:
