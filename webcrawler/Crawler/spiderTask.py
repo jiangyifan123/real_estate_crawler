@@ -1,12 +1,5 @@
 import threading
-import logging
-
-
-logging.basicConfig(
-    level=logging.DEBUG,
-    format="[%(asctime)s] {%(filename)s:%(funcName)s:%(lineno)d} %(levelname)s - %(message)s",
-    handlers=[logging.FileHandler("logs.log"), logging.StreamHandler()],
-)
+from utils.LogTools.CustomLog import logDebug
 
 
 class SpiderTask(threading.Thread):
@@ -40,10 +33,10 @@ class SpiderTaskManager:
 
     def runAllTask(self):
         for taskKey, task in self._taskList.items():
-            logging.info(f"creating task {taskKey}")
+            logDebug(f"creating task {taskKey}")
             self._threadList[taskKey] = []
             for i in range(task.process_count()):
-                logging.info(f'created task {taskKey} {i}')
+                logDebug(f'created task {taskKey} {i}')
                 subTask = task()
                 self._threadList[taskKey].append(subTask)
                 subTask.start()

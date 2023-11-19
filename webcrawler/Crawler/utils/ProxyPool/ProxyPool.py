@@ -24,7 +24,7 @@ def delete_proxy(proxy):
     requests.get("{}/delete/?proxy={}".
                  format(host, proxy))
 
-def requestWithProxy(method, url, headers, data, useHttps=True) -> requests.Response:
+def requestWithProxy(method, url, headers, data, useHttps=False) -> requests.Response:
     if not use_proxy:
         return requests.request(method, url, headers=headers, data=data)
     # ....

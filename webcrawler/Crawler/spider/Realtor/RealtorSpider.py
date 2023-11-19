@@ -41,9 +41,10 @@ class RealtorSpiderTask(SpiderTask):
                 detailModel = RealtorDetailPage().start(model.url)
                 detailModel.rent_zestimate = RentData().start(model.address).rent_estimate
                 upsert_property(detailModel)
+                time.sleep(2)
+            time.sleep(1)
 
     def run(self):
-        # print(RealtorCityData().start("https://www.realtor.com/realestateandhomes-search/Lafayette_LA/sby-1"))
         self.getByZipcode()
 
 

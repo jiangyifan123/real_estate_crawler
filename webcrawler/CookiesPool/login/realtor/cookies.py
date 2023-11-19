@@ -12,7 +12,7 @@ class RealtorCookies():
         #login page
         self.url = 'https://www.realtor.com/myaccount'
         self.browser = browser
-        self.shortWait = WebDriverWait(self.browser, 5)
+        self.shortWait = WebDriverWait(self.browser, 3)
         self.wait = WebDriverWait(self.browser, 20)
         self.username = username
         self.password = password
@@ -87,7 +87,7 @@ class RealtorCookies():
         :return:
         """
         try:
-            needVery = True
+            needVery = False
             def check_bot_verify():
                 global needVery
                 h2List = self.shortWait.until(EC.presence_of_all_elements_located((By.CSS_SELECTOR, 'h2')))

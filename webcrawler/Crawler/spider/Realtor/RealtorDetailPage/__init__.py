@@ -49,7 +49,7 @@ class RealtorDetailPage:
         )
 
     def start(self, url) -> RealtorDetailPageModel:
-        response = request("GET", url, cookieKey='realtor')
+        response = request("GET", url, cookieKey='realtor', useHttps=True)
         return self.parse(url, response)
 
 if __name__ == "__main__":

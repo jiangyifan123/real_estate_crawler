@@ -16,7 +16,7 @@ taskList = [
     # ZillowSpiderTask,  #获取zillow房源数据
     RealtorSpiderTask,  #获取realtor房源数据
     RentCastSpiderTask,  #更新数据库无rent的房源数据
-    RealtorSpiderTask_update_by_city, #根据city获取realtor数据
+    # RealtorSpiderTask_update_by_city, #根据city获取realtor数据
     #每天更新数据库已有房源数据状态
 ]
 
