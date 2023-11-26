@@ -7,10 +7,11 @@ def request(method, url, headers={}, data={}, cookieKey="", tryCount=10, useHttp
     if tryCount <= 0:
         return None
     headers['user-agent'] = random_user_agent()
+    cookies = {}
     if cookieKey != "":
-        headers['cookie'] = getCookie(cookieKey)
-    response = requestWithProxy(method, url, headers, data, useHttps)
+        cookies = getCookie(cookieKey)
+    response = requestWithProxy(method, url, headers, data, cookies, useHttps)
     if response.status_code != 200:
         print(f'{url} status code {response.status_code} tryCount: {tryCount}')
-        return request(method, url, headers, data, cookieKey, tryCount-1)
+        return request(method, url, headers, data, cookieKey, tryCount-1, useHttps)
     return response

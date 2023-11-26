@@ -39,8 +39,9 @@ class RealtorSpiderTask(SpiderTask):
                 if check_property(model):
                     continue
                 detailModel = RealtorDetailPage().start(model.url)
-                detailModel.rent_zestimate = RentData().start(model.address).rent_estimate
-                upsert_property(detailModel)
+                if detailModel.address is not None and len(detailModel.address) != 0:
+                    detailModel.rent_zestimate = RentData().start(model.address).rent_estimate
+                    upsert_property(detailModel)
                 time.sleep(2)
             time.sleep(1)
 

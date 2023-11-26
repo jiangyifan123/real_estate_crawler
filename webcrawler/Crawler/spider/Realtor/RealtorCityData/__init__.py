@@ -34,7 +34,7 @@ class RealtorCityData:
         )
 
     def start(self, url):
-        response = request("GET", url)
+        response = request("GET", url, cookieKey='realtor', useHttps=True)
         return self.parse(url, response)
     
 if __name__ == "__main__":

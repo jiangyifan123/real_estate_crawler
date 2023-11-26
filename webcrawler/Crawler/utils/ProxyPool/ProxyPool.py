@@ -27,7 +27,7 @@ def delete_proxy(proxy):
                  format(host, proxy))
 
 
-def requestWithProxy(method, url, headers, data, useHttps=False) -> requests.Response:
+def requestWithProxy(method, url, headers, data, cookies={}, useHttps=False) -> requests.Response:
     if not use_proxy:
         return requests.request(method, url, headers=headers, data=data)
     # ....
@@ -40,7 +40,7 @@ def requestWithProxy(method, url, headers, data, useHttps=False) -> requests.Res
         proxies = {"http": f"http://{proxy}"}
     while retry_count > 0:
         try:
-            html = requests.request(method, url, headers=headers, data=data, proxies=proxies, timeout=5)
+            html = requests.request(method, url, headers=headers, data=data, proxies=proxies, timeout=5, cookies=cookies)
             # 使用代理访问
             return html
         except Exception:

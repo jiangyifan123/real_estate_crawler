@@ -3,7 +3,7 @@ from database.postgres_db import SessionLocal
 import hashlib
 from sqlalchemy.dialects import postgresql
 from models.models.database.property_info import PropertyInfo as PropertyInfoModelDB
-
+from sqlalchemy.sql.operators import ilike_op
 
 def get_property_by_id(property_id: str) -> PropertyInfoModelDB:
     db = next(get_postgres_db())
@@ -15,7 +15,8 @@ def get_property_by_id(property_id: str) -> PropertyInfoModelDB:
 
 
 def check_property(property: PropertyInfoModelDB) -> bool:
-    return get_property_by_id(hashID(property)) is not None
+    db = next(get_postgres_db())
+    return db.query(PropertyInfoModelDB).filter(ilike_op(PropertyInfoModelDB.address, f'%{property.address}%')).first()
 
 
 def get_properties_page(page_num=0, page_size=50) -> List[PropertyInfoModelDB]:
