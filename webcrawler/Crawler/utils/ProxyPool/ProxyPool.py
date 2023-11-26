@@ -1,28 +1,31 @@
 import requests
 import socket
-import logging
 
-proxyPoolHost = "https://proxy.andyfanfan.myds.me"
-internal_host = "http://192.168.1.112:5010"
+proxyPoolHost = "https://proxy.andyfanfan.myds.me/"
+internal_host = "http://10.0.0.6:5010"
 hostname = socket.gethostname()
 LocalIP = socket.gethostbyname(hostname)
-#默认使用proxy跑
+# 默认使用proxy跑
 use_proxy = True
 internal = True
+
 
 def get_https_proxy():
     host = internal_host if internal else proxyPoolHost
     return requests.get("{}/get?type=https".format(host)).json()
 
+
 def get_http_proxy():
     host = internal_host if internal else proxyPoolHost
-    return requests.get("{}/get".format(host)).json()
+    return requests.get(f"{host}/get").json()
+
 
 def delete_proxy(proxy):
     print('delete proxy: {}'.format(proxy))
     host = internal_host if internal else proxyPoolHost
     requests.get("{}/delete/?proxy={}".
                  format(host, proxy))
+
 
 def requestWithProxy(method, url, headers, data, useHttps=False) -> requests.Response:
     if not use_proxy:

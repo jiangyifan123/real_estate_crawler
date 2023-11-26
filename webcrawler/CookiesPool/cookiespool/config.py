@@ -20,10 +20,12 @@ GENERATOR_MAP = {
 # 测试类，如扩展其他站点，请在此配置
 TESTER_MAP = {
     # 'weibo': 'WeiboValidTester'
+    'realtor': 'RealtorValidTester',
 }
 
 TEST_URL_MAP = {
     # 'weibo': 'https://m.weibo.cn/'
+    'realtor': 'https://www.realtor.com/realestateandhomes-detail/312-W-5th-St-Apt-1005_Los-Angeles_CA_90013_M24602-35146'
 }
 
 # 产生器和验证器循环周期
