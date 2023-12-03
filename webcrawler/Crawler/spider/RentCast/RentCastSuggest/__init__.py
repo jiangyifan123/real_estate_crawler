@@ -23,5 +23,5 @@ class RentCastSuggest:
 
     def start(self, address) -> RentCastSuggestModel:
         url = self.getUrl(address)
-        response = request("GET", url, tryCount=1)
+        response = request("GET", url, tryCount=1, useProxy=True)
         return self.parse(response)

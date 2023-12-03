@@ -4,6 +4,7 @@ from urllib.parse import urlparse
 from spider.Realtor.RealtorCityData.RealtorCityDataModel import RealtorCityDataModel, RealtorCardDataModel
 import json
 from utils.Tools import getFirstOne, getJsonValueFromPath
+import time
 
 class RealtorCityData:
     def parse(self, url, response):
@@ -34,6 +35,7 @@ class RealtorCityData:
         )
 
     def start(self, url):
+        time.sleep(1)
         response = request("GET", url, cookieKey='realtor', useHttps=True)
         return self.parse(url, response)
     

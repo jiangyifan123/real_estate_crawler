@@ -3,6 +3,7 @@ from lxml import etree
 from spider.Realtor.RealtorDetailPage.RealtorDetailPageModel import RealtorDetailPageModel
 import json
 from utils.Tools import getFirstOne, getJsonValueFromPath
+import time
 
 class RealtorDetailPage:
     def parse(self, url, response) -> RealtorDetailPageModel:
@@ -49,6 +50,7 @@ class RealtorDetailPage:
         )
 
     def start(self, url) -> RealtorDetailPageModel:
+        time.sleep(1)
         response = request("GET", url, cookieKey='realtor', useHttps=True)
         return self.parse(url, response)
 

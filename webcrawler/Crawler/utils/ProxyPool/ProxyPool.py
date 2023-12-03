@@ -2,11 +2,11 @@ import requests
 import socket
 
 proxyPoolHost = "https://proxy.andyfanfan.myds.me/"
-internal_host = "http://10.0.0.6:5010"
+internal_host = "http://192.168.1.112:5010"
 hostname = socket.gethostname()
 LocalIP = socket.gethostbyname(hostname)
 # 默认使用proxy跑
-use_proxy = True
+use_channel = False
 internal = True
 
 
@@ -27,9 +27,22 @@ def delete_proxy(proxy):
                  format(host, proxy))
 
 
+def requestByChannel(method, url, headers, data, cookies={}) -> requests.Response:
+    # 隧道域名:端口号
+    tunnel = "r951.kdltps.com:15818"
+
+    # 用户名密码方式
+    username = "t10151619356013"
+    password = "0i247lpw"
+    proxies = {
+        "http": f"http://{username}:{password}@{tunnel}/",
+        "https": f"http://{username}:{password}@{tunnel}/"
+    }
+    return requests.get(url, headers=headers, data=data, cookies=cookies, proxies=proxies)
+
 def requestWithProxy(method, url, headers, data, cookies={}, useHttps=False) -> requests.Response:
-    if not use_proxy:
-        return requests.request(method, url, headers=headers, data=data)
+    if use_channel:
+        return requestByChannel(method, url, headers, data, cookies)
     # ....
     retry_count = 5
     if useHttps:

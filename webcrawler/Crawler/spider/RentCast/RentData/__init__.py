@@ -2,7 +2,7 @@ from utils.RequestTool.CustomRequest import request
 import urllib.parse
 from spider.RentCast.RentData.RentDataModel import RentDataModel
 from utils.Tools import getJsonValueFromPath
-
+import time
 class RentData:
     def getUrl(self, address) -> str:
         url = "https://us-central1-rentcast-4da28.cloudfunctions.net/getRentData"
@@ -39,6 +39,7 @@ class RentData:
         )
 
     def start(self, address) -> RentDataModel:
+        time.sleep(1)
         url = self.getUrl(address)
-        response = request("GET", url, tryCount=1, useHttps=True)
+        response = request("GET", url, tryCount=1, useHttps=True, useProxy=True)
         return self.parse(response)

@@ -66,4 +66,7 @@ def get_postgres_db():
 
 
 def hashID(model: PropertyInfoModelDB):
-    return hashlib.sha256((model.address + model.city + model.state + str(model.zipcode) + model.property_type).encode('utf-8')).hexdigest()
+    try:
+        return hashlib.sha256((model.address + model.city + model.state + str(model.zipcode) + model.property_type).encode('utf-8')).hexdigest()
+    except Exception as e:
+        return ""

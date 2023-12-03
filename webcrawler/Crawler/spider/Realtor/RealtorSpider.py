@@ -42,8 +42,6 @@ class RealtorSpiderTask(SpiderTask):
                 if detailModel.address is not None and len(detailModel.address) != 0:
                     detailModel.rent_zestimate = RentData().start(model.address).rent_estimate
                     upsert_property(detailModel)
-                time.sleep(2)
-            time.sleep(1)
 
     def run(self):
         self.getByZipcode()
