@@ -4,7 +4,7 @@ from spider.RentCast.RentCastSuggest import RentCastSuggest
 from database.crud import upsert_property, get_all_property, hashID
 from models.models.database.property_info import PropertyInfo
 
-class RentCastSpiderTask(SpiderTask):
+class UpdatePropertyTask(SpiderTask):
     @classmethod
     def key(self):
         return "rent_cast_task_get_rent"

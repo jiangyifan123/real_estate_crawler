@@ -23,7 +23,8 @@ def request(method, url, headers={}, data={}, cookieKey="", tryCount=3, useHttps
         else:
             response = requests.request(method, url, headers=headers, data=data, cookies=cookies)
     except Exception as e:
-        pass
+        response = requests.Response()
+        response.status_code == 500
     if response.status_code != 200:
         print(f'{url} status code {response.status_code} tryCount: {tryCount}')
         return request(method, url, headers, data, cookieKey, tryCount-1, useHttps, useProxy)

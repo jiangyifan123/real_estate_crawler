@@ -1,7 +1,7 @@
 from tasks.spiderTask import SpiderTaskManager
 from tasks.RealtorTask import RealtorSpiderTaskByZipcode, RealtorSpiderTaskByCity
 from tasks.ZillowTask import ZillowSpiderTaskByZipcode, ZillowSpiderTaskByCity
-from tasks.RentCastTask import RentCastSpiderTask
+from tasks.UpdatePropertyTask import UpdatePropertyTask
 import logging
 from dotenv import load_dotenv
 
@@ -17,7 +17,7 @@ taskList = [
     ZillowSpiderTaskByCity,  # 获取zillow房源 by city
     RealtorSpiderTaskByZipcode,  # 获取realtor房源数据
     RealtorSpiderTaskByCity,  # 根据city获取realtor数据
-    RentCastSpiderTask,  # 更新数据库无rent的房源数据
+    UpdatePropertyTask,  # 更新raw房源表数据并且验证好的数据到验证表
 ]
 
 if __name__ == '__main__':
