@@ -19,7 +19,7 @@
       "program": "${workspaceFolder}/webcrawler/Crawler/main.py",
       "console": "integratedTerminal",
       "justMyCode": true,
-      // "python": "/Users/jiangyifan/anaconda3/envs/Crawler/bin/python"
+      "python": "/Users/jiangyifan/anaconda3/envs/Crawler/bin/python"
     },
     {
       "name": "Python CookiePools",
@@ -28,7 +28,7 @@
       "program": "${workspaceFolder}/webcrawler/CookiesPool/run.py",
       "console": "integratedTerminal",
       "justMyCode": true,
-      // "python": "/Users/jiangyifan/anaconda3/envs/CookiePool/bin/python"
+      "python": "/Users/jiangyifan/anaconda3/envs/CookiePool/bin/python"
     }
   ]
 }

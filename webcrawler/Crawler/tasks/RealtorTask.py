@@ -15,15 +15,13 @@ def getCityUrl(city):
 
 
 class RealtorSpiderTaskByZipcode(SpiderTask):
-    def __init__(self):
-        super().__init__()
-        self.zipcodes = [
-            "90013",
-            "11354",
-            "08861",
-            "07093",
-            "07107"
-        ]
+    zipcodes = [
+        "90013",
+        "11354",
+        "08861",
+        "07093",
+        "07107"
+    ]
 
     @classmethod
     def key(self):
@@ -31,7 +29,7 @@ class RealtorSpiderTaskByZipcode(SpiderTask):
 
     @classmethod
     def description(self):
-        return "realtor spider search property"
+        return "realtor spider search property by zipcode"
 
     def getByZipcode(self):
         for zipcode in self.zipcodes:
@@ -48,11 +46,9 @@ class RealtorSpiderTaskByZipcode(SpiderTask):
 
 
 class RealtorSpiderTaskByCity(SpiderTask):
-    def __init__(self):
-        super().__init__()
-        self.cities = [
-            "Lafayette_LA",
-        ]
+    cities = [
+        "Lafayette_LA",
+    ]
 
     @classmethod
     def key(self):
@@ -71,3 +67,22 @@ class RealtorSpiderTaskByCity(SpiderTask):
                     continue
                 detailModel = RealtorDetailPage().start(model.url)
                 upsert_property(detailModel)
+
+
+class RealtorSpiderTask(SpiderTask):
+    taskList = [
+        RealtorSpiderTaskByZipcode,
+        RealtorSpiderTaskByCity
+    ]
+
+    @classmethod
+    def key(self):
+        return "realtor_spider"
+
+    @classmethod
+    def description(self):
+        return "realtor spider"
+
+    def run(self):
+        for task in self.taskList:
+            task().run()

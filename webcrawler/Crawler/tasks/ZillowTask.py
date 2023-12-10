@@ -79,3 +79,22 @@ class ZillowSpiderTaskByCity(SpiderTask):
                 if check_property(model):
                     continue
                 pass
+
+
+class ZillowSpiderTask(SpiderTask):
+    taskList = [
+        ZillowSpiderTaskByZipcode,
+        ZillowSpiderTaskByCity
+    ]
+
+    @classmethod
+    def key(self):
+        return "zillow_spider"
+
+    @classmethod
+    def description(self):
+        return "zillow spider"
+
+    def run(self):
+        for task in self.taskList:
+            task().run()
