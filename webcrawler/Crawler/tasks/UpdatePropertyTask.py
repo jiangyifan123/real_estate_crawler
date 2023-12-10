@@ -1,18 +1,11 @@
-from tasks.spiderTask import SpiderTask
+from tasks.spiderTask import SpiderTask, SpiderHandler
 from spider.RentCast.RentData import RentData
 from spider.RentCast.RentCastSuggest import RentCastSuggest
 from database.crud import upsert_property, get_all_property, hashID
 from models.models.database.property_info import PropertyInfo
 
-class UpdatePropertyTask(SpiderTask):
-    @classmethod
-    def key(self):
-        return "rent_cast_task_get_rent"
 
-    @classmethod
-    def description(self):
-        return "update database rent by address"
-
+class UpdateRentDataTask(SpiderHandler):
     def choosePriorityAddress(self, model: PropertyInfo, address_list: list[str]) -> str:
         if model.city is None:
             return address_list[0]
@@ -39,3 +32,17 @@ class UpdatePropertyTask(SpiderTask):
 
     def run(self):
         self.updateRent()
+
+
+class UpdatePropertyTask(SpiderTask):
+    _taskList = [
+        UpdateRentDataTask,
+    ]
+
+    @classmethod
+    def key(self):
+        return "rent_cast_task_get_rent"
+
+    @classmethod
+    def description(self):
+        return "update database rent by address"

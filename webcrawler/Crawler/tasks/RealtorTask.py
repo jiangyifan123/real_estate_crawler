@@ -1,4 +1,4 @@
-from tasks.spiderTask import SpiderTask
+from tasks.spiderTask import SpiderTask, SpiderHandler
 from spider.Realtor.RealtorSuggest import RealtorSuggest
 from spider.Realtor.RealtorCityData import RealtorCityData
 from spider.Realtor.RealtorDetailPage import RealtorDetailPage
@@ -14,7 +14,7 @@ def getCityUrl(city):
     return f"https://www.realtor.com/realestateandhomes-search/{city}/sby-1"
 
 
-class RealtorSpiderTaskByZipcode(SpiderTask):
+class RealtorSpiderTaskByZipcode(SpiderHandler):
     zipcodes = [
         "90013",
         "11354",
@@ -22,14 +22,6 @@ class RealtorSpiderTaskByZipcode(SpiderTask):
         "07093",
         "07107"
     ]
-
-    @classmethod
-    def key(self):
-        return "realtor_spider_test"
-
-    @classmethod
-    def description(self):
-        return "realtor spider search property by zipcode"
 
     def getByZipcode(self):
         for zipcode in self.zipcodes:
@@ -45,18 +37,10 @@ class RealtorSpiderTaskByZipcode(SpiderTask):
         self.getByZipcode()
 
 
-class RealtorSpiderTaskByCity(SpiderTask):
+class RealtorSpiderTaskByCity(SpiderHandler):
     cities = [
         "Lafayette_LA",
     ]
-
-    @classmethod
-    def key(self):
-        return "realtor_spider_test"
-
-    @classmethod
-    def description(self):
-        return "realtor spider search property by city"
 
     def run(self):
         for city in self.cities:
@@ -70,7 +54,7 @@ class RealtorSpiderTaskByCity(SpiderTask):
 
 
 class RealtorSpiderTask(SpiderTask):
-    taskList = [
+    _taskList = [
         RealtorSpiderTaskByZipcode,
         RealtorSpiderTaskByCity
     ]
@@ -82,7 +66,3 @@ class RealtorSpiderTask(SpiderTask):
     @classmethod
     def description(self):
         return "realtor spider"
-
-    def run(self):
-        for task in self.taskList:
-            task().run()

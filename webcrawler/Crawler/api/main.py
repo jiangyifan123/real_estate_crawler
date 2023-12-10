@@ -18,4 +18,4 @@ def read_root():
 def start_api():
     import uvicorn
     print("Running the FastAPI application")
-    uvicorn.run("cookiespool.api.main:app", host=API_HOST, port=API_PORT, reload=True)
+    uvicorn.run("api.main:app", host=API_HOST, port=API_PORT, reload=True)

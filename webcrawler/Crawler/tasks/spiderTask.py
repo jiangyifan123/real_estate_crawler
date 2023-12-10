@@ -1,5 +1,10 @@
 import threading
 from utils.LogTools.CustomLog import logDebug
+from multiprocessing import Process
+
+class SpiderHandler(object):
+    def run(self):
+        pass
 
 
 class SpiderTask(threading.Thread):
@@ -12,17 +17,20 @@ class SpiderTask(threading.Thread):
         return ""
 
     @classmethod
-    def process_count(cls):
-        return 1
-
     def run(self):
-        pass
+        print(f"run task {self.key()}")
+        if not hasattr(self, '_taskList'):
+            self._taskList = []
+        self._threadList = []
+        for task in self._taskList:
+            subTask = task()
+            self._threadList.append(subTask)
+            subTask.run()
 
 
 class SpiderTaskManager:
     def __init__(self) -> None:
         self._taskList = {}
-        self._threadList = {}
 
     def register(self, task):
         if task.key() not in self._taskList:
@@ -34,9 +42,5 @@ class SpiderTaskManager:
     def runAllTask(self):
         for taskKey, task in self._taskList.items():
             logDebug(f"creating task {taskKey}")
-            self._threadList[taskKey] = []
-            for i in range(task.process_count()):
-                logDebug(f'created task {taskKey} {i}')
-                subTask = task()
-                self._threadList[taskKey].append(subTask)
-                subTask.start()
+            p = Process(target=task.run)
+            p.start()

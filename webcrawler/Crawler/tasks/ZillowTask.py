@@ -1,4 +1,4 @@
-from tasks.spiderTask import SpiderTask
+from tasks.spiderTask import SpiderTask, SpiderHandler
 from spider.Zillow.ZillowSuggest import ZillowSuggest, ZillowSuggestModel
 from spider.Zillow.ZillowDetailPage import ZillowDetailPageModel, ZillowDetailPage
 from spider.Zillow.ZillowSearchPage import ZillowSearchPageModel, ZillowSearchPage, SearchType
@@ -39,18 +39,10 @@ def getEstateByFuzzySearch(searchText):
         pass
     return modelList
 
-class ZillowSpiderTaskByZipcode(SpiderTask):
+class ZillowSpiderTaskByZipcode(SpiderHandler):
     zipcodes = [
         98121,
     ]
-
-    @classmethod
-    def key(self):
-        return "zillow_spider_by_zipcode"
-
-    @classmethod
-    def description(self):
-        return "zillow spider"
 
     def run(self):
         for zipcode in self.zipcodes:
@@ -60,18 +52,10 @@ class ZillowSpiderTaskByZipcode(SpiderTask):
                 pass
 
 
-class ZillowSpiderTaskByCity(SpiderTask):
+class ZillowSpiderTaskByCity(SpiderHandler):
     cities = [
         "seattle-wa-98121",
     ]
-
-    @classmethod
-    def key(self):
-        return "zillow_spider_update_property"
-
-    @classmethod
-    def description(self):
-        return "zillow spider update the latest info of properties in database"
 
     def run(self):
         for city in self.cities:
@@ -82,7 +66,7 @@ class ZillowSpiderTaskByCity(SpiderTask):
 
 
 class ZillowSpiderTask(SpiderTask):
-    taskList = [
+    _taskList = [
         ZillowSpiderTaskByZipcode,
         ZillowSpiderTaskByCity
     ]
@@ -94,7 +78,3 @@ class ZillowSpiderTask(SpiderTask):
     @classmethod
     def description(self):
         return "zillow spider"
-
-    def run(self):
-        for task in self.taskList:
-            task().run()
