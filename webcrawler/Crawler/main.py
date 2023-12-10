@@ -1,7 +1,7 @@
-from spiderTask import SpiderTaskManager
-from spider.Zillow.ZillowSpider import ZillowSpiderTaskByZipcode, ZillowSpiderTaskByCity
-from spider.Realtor.RealtorSpider import RealtorSpiderTaskByZipcode, RealtorSpiderTaskByCity
-from spider.RentCast.RentCastSpider import RentCastSpiderTask
+from tasks.spiderTask import SpiderTaskManager
+from tasks.RealtorTask import RealtorSpiderTaskByZipcode, RealtorSpiderTaskByCity
+from tasks.ZillowTask import ZillowSpiderTaskByZipcode, ZillowSpiderTaskByCity
+from tasks.RentCastTask import RentCastSpiderTask
 import logging
 from dotenv import load_dotenv
 

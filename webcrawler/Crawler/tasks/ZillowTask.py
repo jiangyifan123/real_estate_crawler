@@ -1,7 +1,7 @@
+from tasks.spiderTask import SpiderTask
 from spider.Zillow.ZillowSuggest import ZillowSuggest, ZillowSuggestModel
 from spider.Zillow.ZillowDetailPage import ZillowDetailPageModel, ZillowDetailPage
 from spider.Zillow.ZillowSearchPage import ZillowSearchPageModel, ZillowSearchPage, SearchType
-from spiderTask import SpiderTask
 from database.crud import upsert_property, get_all_property, check_property
 
 
@@ -57,8 +57,7 @@ class ZillowSpiderTaskByZipcode(SpiderTask):
             for model in getEstateByFuzzySearch(zipcode):
                 if check_property(model):
                     continue
-                detailModel = ZillowDetailPage().start(model.url)
-                upsert_property(detailModel)
+                pass
 
 
 class ZillowSpiderTaskByCity(SpiderTask):
@@ -79,5 +78,4 @@ class ZillowSpiderTaskByCity(SpiderTask):
             for model in getEstateByFuzzySearch(city):
                 if check_property(model):
                     continue
-                detailModel = ZillowDetailPage().start(model.url)
-                upsert_property(detailModel)
+                pass

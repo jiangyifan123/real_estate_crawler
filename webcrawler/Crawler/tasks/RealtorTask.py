@@ -1,9 +1,9 @@
+from tasks.spiderTask import SpiderTask
 from spider.Realtor.RealtorSuggest import RealtorSuggest
 from spider.Realtor.RealtorCityData import RealtorCityData
 from spider.Realtor.RealtorDetailPage import RealtorDetailPage
 from spider.RentCast.RentData import RentData
 from database.crud import upsert_property, check_property
-from spiderTask import SpiderTask
 
 
 def getUrlByZipcode(zipcode):

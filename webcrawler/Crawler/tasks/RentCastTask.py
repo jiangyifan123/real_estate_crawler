@@ -1,4 +1,4 @@
-from spiderTask import SpiderTask
+from tasks.spiderTask import SpiderTask
 from spider.RentCast.RentData import RentData
 from spider.RentCast.RentCastSuggest import RentCastSuggest
 from database.crud import upsert_property, get_all_property, hashID
