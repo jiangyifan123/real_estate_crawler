@@ -1,6 +1,6 @@
 from spiderTask import SpiderTaskManager
-from spider.Zillow.ZillowSpider import ZillowSpiderTask
-from spider.Realtor.RealtorSpider import RealtorSpiderTask, RealtorSpiderTask_update_by_city, RealtorSpiderTask_Update_Property
+from spider.Zillow.ZillowSpider import ZillowSpiderTaskByZipcode, ZillowSpiderTaskByCity
+from spider.Realtor.RealtorSpider import RealtorSpiderTaskByZipcode, RealtorSpiderTaskByCity
 from spider.RentCast.RentCastSpider import RentCastSpiderTask
 import logging
 from dotenv import load_dotenv
@@ -13,11 +13,11 @@ logging.basicConfig(
 )
 
 taskList = [
-    ZillowSpiderTask,  # 获取zillow房源数据
-    RealtorSpiderTask,  # 获取realtor房源数据
+    ZillowSpiderTaskByZipcode,  # 获取zillow房源数据 by zipcode
+    ZillowSpiderTaskByCity,  # 获取zillow房源 by city
+    RealtorSpiderTaskByZipcode,  # 获取realtor房源数据
+    RealtorSpiderTaskByCity,  # 根据city获取realtor数据
     RentCastSpiderTask,  # 更新数据库无rent的房源数据
-    RealtorSpiderTask_update_by_city, # 根据city获取realtor数据
-    #每天更新数据库已有房源数据状态
 ]
 
 if __name__ == '__main__':
