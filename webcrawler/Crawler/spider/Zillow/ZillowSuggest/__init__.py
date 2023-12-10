@@ -20,5 +20,5 @@ class ZillowSuggest:
 
     def start(self, searchText):
         url = self.getUrl(searchText)
-        response = request("GET", url, cookieKey='zillow')
+        response = request("GET", url, useHttps=True, useProxy=True)
         return self.parse(response)

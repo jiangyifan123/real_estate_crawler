@@ -33,7 +33,7 @@ class ZillowDetailPage:
             return model
 
     def start(self, url):
-        response = request("GET", url, cookieKey='zillow')
+        response = request("GET", url, cookieKey='zillow', useHttps=True, useProxy=True)
         return self.parse(url, response)
 
 if __name__ == "__main__":

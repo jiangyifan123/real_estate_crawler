@@ -53,6 +53,7 @@ def upsert_property(
     )
     r = db.execute(stmt)
     db.commit()
+    db.close()
     print(f"id: {property_info_db_model.property_id} row: {r.rowcount}")
     return property_info_db_model
 

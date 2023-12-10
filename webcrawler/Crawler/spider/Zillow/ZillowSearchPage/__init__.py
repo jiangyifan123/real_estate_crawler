@@ -4,6 +4,7 @@ import json
 from spider.Zillow.ZillowSearchPage.ZillowSearchPageModel import ZillowSearchPageModel, ZillowModel
 from enum import Enum
 from urllib.parse import urlparse
+import time
 
 isDebuging = False
 
@@ -52,10 +53,12 @@ class ZillowSearchPage:
         return ZillowSearchPageModel(modelList)
 
     def startUrl(self, url):
+        time.sleep(1)
         response = request("GET", url, cookieKey='zillow')
         return self.parse(url, response)
 
     def start(self, searchType: SearchType, searchText: str):
+        time.sleep(1)
         if searchType == SearchType.CITY:
             url = self.getUrlByCity(searchText)
             response = request("GET", url, cookieKey='zillow')

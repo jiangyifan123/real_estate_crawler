@@ -53,10 +53,10 @@ def requestWithProxy(method, url, headers, data, cookies={}, useHttps=False) -> 
         proxies = {"http": f"http://{proxy}"}
     while retry_count > 0:
         try:
-            html = requests.request(method, url, headers=headers, data=data, proxies=proxies, timeout=5, cookies=cookies)
+            html = requests.request(method, url, headers=headers, data=data, proxies=proxies, timeout=15, cookies=cookies)
             # 使用代理访问
             return html
-        except Exception:
+        except Exception as e:
             retry_count -= 1
     # 删除代理池中代理
     delete_proxy(proxy)

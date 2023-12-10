@@ -1,5 +1,5 @@
 # Redis数据库地址
-REDIS_HOST = '127.0.0.1'
+REDIS_HOST = '192.168.1.158'
 
 # Redis端口
 REDIS_PORT = 6379
@@ -36,7 +36,7 @@ API_HOST = '0.0.0.0'
 API_PORT = 5020
 
 # 产生器开关，模拟登录添加Cookies
-GENERATOR_PROCESS = True
+GENERATOR_PROCESS = False
 # 验证器开关，循环检测数据库中Cookies是否可用，不可用删除
 VALID_PROCESS = True
 # API接口服务
