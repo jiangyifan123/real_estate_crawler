@@ -15,16 +15,42 @@ class RealtorCityData:
         next_data = getFirstOne(html.xpath('//*[@id="__NEXT_DATA__"]/text()'), "{}")
         next_data_json = json.loads(next_data)
         property_list = getJsonValueFromPath(next_data_json, "props/pageProps/properties", [])
-        model_list = [RealtorCardDataModel(
-            url=f"https://www.realtor.com/realestateandhomes-detail/{p.get('permalink', '')}",
-            address=p.get("location", {}).get("address", {}).get("line", ""),
-            price=p.get("list_price", 0),
-            status=p.get("status", ""),
-            zipcode=p.get("location", {}).get("address", {}).get("postal_code", ""),
-            state=p.get("location", {}).get("address", {}).get("state", ""),
-            city=p.get("location", {}).get("address", {}).get("city", ""),
-            property_type=p.get("description", {}).get("type", "")
-        ) for p in property_list]
+        model_list = []
+        for p in property_list:
+            try:
+                photos = p.get("photos", [])
+                if photos is None:
+                    photos = []
+                model_list.append(RealtorCardDataModel(
+                    detailurl=f"https://www.realtor.com/realestateandhomes-detail/{p.get('permalink', '')}",
+                    address=getJsonValueFromPath(p, "location/address/line", ""),
+                    purchase_price=p.get("list_price", 0),
+                    status_type=p.get("status", ""),
+                    zipcode=getJsonValueFromPath(p, "location/address/postal_code", ""),
+                    state=getJsonValueFromPath(p, "location/address/state", ""),
+                    city=getJsonValueFromPath(p, "location/address/city", ""),
+                    property_type=getJsonValueFromPath(p, "description/type", 0),
+                    num_beds=int(float(getJsonValueFromPath(p, "description/beds", 0))),
+                    num_baths=int(float(getJsonValueFromPath(p, "description/baths_consolidated", 0))),
+                    sq_ft=getJsonValueFromPath(p, "description/sqft", 0),
+                    sq_ft_lot=getJsonValueFromPath(p, "description/lot_sqft", 0),
+                    # num_days_on_market=0,
+                    # year_built=0,
+                    # num_garage=0,
+                    # description="",
+                    image_links=[v["href"] for v in photos],
+                    # schools="{}",
+                    # hoa=0,
+                    source='realtor',
+                    # zestimate=0,
+                    # unit="",
+                    latitude=getJsonValueFromPath(p, "location/address/coordinate/lat", 0),
+                    longitude=getJsonValueFromPath(p, "location/address/coordinate/lon", 0),
+                    # status_text="",
+                    # rent_zestimate=0,
+                ))
+            except Exception as e:
+                print(e)
         
         next_button = html.xpath('//a[contains(@class, "next-link")]/@href')
         if next_button is not None and len(next_button) > 0:

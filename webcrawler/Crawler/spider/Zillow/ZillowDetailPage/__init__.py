@@ -2,6 +2,7 @@ from utils.RequestTool.CustomRequest import request
 from bs4 import BeautifulSoup
 import json
 from spider.Zillow.ZillowDetailPage.ZillowDetailPageModel import ZillowDetailPageModel
+import time
 
 
 class ZillowDetailPage:
@@ -33,8 +34,10 @@ class ZillowDetailPage:
             return model
 
     def start(self, url):
+        time.sleep(1)
         response = request("GET", url, cookieKey='zillow', useHttps=True, useProxy=True)
         return self.parse(url, response)
+
 
 if __name__ == "__main__":
     testUrl = "https://www.realtor.com/realestateandhomes-detail/507-Flores-Ct_Lafayette_LA_70507_M95730-95159?from=srp-list-card"

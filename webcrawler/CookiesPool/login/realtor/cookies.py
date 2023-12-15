@@ -94,6 +94,18 @@ class RealtorCookies():
                 for e in h2List:
                     if 'Please verify you are a human' in e.text:
                         needVery = True
+                        #鼠标移到标题上
+                        action = ActionChains(self.browser)
+                        action.move_to_element(e).perform()
+                        action.click(e).perform()
+                        times = 30
+                        # 模拟鼠标轨迹通过验证
+                        dx = 100
+                        dy = 20
+                        for i in range(times):
+                            flag = 1 if i < time / 2 else 0
+                            action.move_by_offset(dx / times, flag * dy / times).perform()
+                            time.sleep(1 / times)
                         return True
                 return False
             while check_bot_verify():

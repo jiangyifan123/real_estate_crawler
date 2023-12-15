@@ -19,6 +19,25 @@ def check_property(property: PropertyInfoModelDB) -> bool:
     return db.query(PropertyInfoModelDB).filter(ilike_op(PropertyInfoModelDB.address, f'%{property.address}%')).first()
 
 
+def check_property_update(property: PropertyInfoModelDB) -> bool:
+    db = next(get_postgres_db())
+    pObj = db.query(PropertyInfoModelDB).filter(ilike_op(PropertyInfoModelDB.address, f'%{property.address}%')).first()
+    attrs = [
+        "city",
+        "state",
+        "zipcode",
+        "property_type",
+        "num_beds",
+        "num_baths",
+        "purchase_price",
+        "status_type",
+    ]
+    for attr in attrs:
+        if getattr(pObj, attr, None) != getattr(property, attr, None):
+            return True
+    return False
+
+
 def get_properties_page(page_num=0, page_size=50) -> List[PropertyInfoModelDB]:
     db = next(get_postgres_db())
     return db.query(PropertyInfoModelDB).offset(page_num * page_size).limit(page_size)

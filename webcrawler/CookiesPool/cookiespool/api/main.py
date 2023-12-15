@@ -30,6 +30,11 @@ class Conn:
 app = FastAPI()
 conn = Conn()
 
+def start_api():
+    import uvicorn
+    print("Running the FastAPI application")
+    uvicorn.run("cookiespool.api.main:app", host=API_HOST, port=API_PORT, reload=True)
+
 @app.get("/")
 def read_root():
     return RedirectResponse(url="/docs")
@@ -68,8 +73,3 @@ def count(website):
     g = conn.get_conn()
     count = getattr(g, website + '_cookies').count()
     return json.dumps({'status': '1', 'count': count})
-
-def start_api():
-    import uvicorn
-    print("Running the FastAPI application")
-    uvicorn.run("cookiespool.api.main:app", host=API_HOST, port=API_PORT, reload=True)

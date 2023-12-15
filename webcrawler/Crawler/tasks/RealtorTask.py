@@ -3,7 +3,7 @@ from spider.Realtor.RealtorSuggest import RealtorSuggest
 from spider.Realtor.RealtorCityData import RealtorCityData
 from spider.Realtor.RealtorDetailPage import RealtorDetailPage
 from spider.RentCast.RentData import RentData
-from database.crud import upsert_property, check_property
+from database.crud import upsert_property, check_property_update
 
 
 def getUrlByZipcode(zipcode):
@@ -28,10 +28,9 @@ class RealtorSpiderTaskByZipcode(SpiderHandler):
             url = getUrlByZipcode(zipcode)
             model_list = RealtorCityData().start(url).model_list
             for model in model_list:
-                if check_property(model):
+                if not check_property_update(model):
                     continue
-                detailModel = RealtorDetailPage().start(model.url)
-                upsert_property(detailModel)
+                upsert_property(model)
 
     def run(self):
         self.getByZipcode()
@@ -47,10 +46,9 @@ class RealtorSpiderTaskByCity(SpiderHandler):
             url = getCityUrl(city)
             model_list = RealtorCityData().start(url).model_list
             for model in model_list:
-                if check_property(model):
+                if not check_property_update(model):
                     continue
-                detailModel = RealtorDetailPage().start(model.url)
-                upsert_property(detailModel)
+                upsert_property(model)
 
 
 class RealtorSpiderTask(SpiderTask):
