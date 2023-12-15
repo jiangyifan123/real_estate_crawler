@@ -35,3 +35,11 @@ def add_zipcode(zipcode: str):
 def get_zipcode():
     conn = RedisClient(f"{prefix}", "zipcode")
     return json.dumps({'status': list(conn.all().keys())})
+
+
+@app.get('/zipcode/delete/{zipcode}')
+def delete_zipcode(zipcode: str):
+    conn = RedisClient(f"{prefix}", "zipcode")
+    res = conn.delete(zipcode)
+    msg = 'delete successfully' if res else 'delete failed'
+    return json.dumps({'status': msg})
