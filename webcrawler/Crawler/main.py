@@ -14,8 +14,8 @@ logging.basicConfig(
 )
 
 taskList = [
-    ZillowSpiderTask,  # 获取zillow房源数据
-    RealtorSpiderTask,  # 获取realtor房源数据
+    # ZillowSpiderTask,  # 获取zillow房源数据
+    # RealtorSpiderTask,  # 获取realtor房源数据
     # UpdatePropertyTask,  # 更新raw房源表数据并且验证好的数据到验证表
 ]
 

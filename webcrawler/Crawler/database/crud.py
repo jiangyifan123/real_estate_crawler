@@ -1,9 +1,16 @@
 from typing import List
-from database.postgres_db import SessionLocal
+from database.postgres_db import SessionLocal, engine
 import hashlib
 from sqlalchemy.dialects import postgresql
 from models.models.database.property_info import PropertyInfo as PropertyInfoModelDB
+from models.models.database.property_info import FullPropertyInfo
 from sqlalchemy.sql.operators import ilike_op
+
+
+# create table
+# FullPropertyInfo.__table__.drop(engine)
+# FullPropertyInfo.__table__.create(engine)
+
 
 def get_property_by_id(property_id: str) -> PropertyInfoModelDB:
     db = next(get_postgres_db())
@@ -33,7 +40,9 @@ def check_property_update(property: PropertyInfoModelDB) -> bool:
         "status_type",
     ]
     for attr in attrs:
-        if getattr(pObj, attr, None) != getattr(property, attr, None):
+        cacheAttr = getattr(pObj, attr, None)
+        newAttr = getattr(property, attr, None)
+        if cacheAttr != newAttr:
             return True
     return False
 
@@ -54,7 +63,8 @@ def get_property(property_id=0):
 
 
 def upsert_property(
-    property_info_db_model: PropertyInfoModelDB
+    property_info_db_model: PropertyInfoModelDB,
+    enterFrom: str = ""
 ) -> PropertyInfoModelDB:
     db = next(get_postgres_db())
     # if not, create new property
@@ -73,7 +83,7 @@ def upsert_property(
     r = db.execute(stmt)
     db.commit()
     db.close()
-    print(f"id: {property_info_db_model.property_id} row: {r.rowcount}")
+    print(f"id: {property_info_db_model.property_id} row: {r.rowcount} from: {enterFrom}")
     return property_info_db_model
 
 

@@ -42,6 +42,9 @@ class RedisClient(object):
         """
         return self.db.hget(self.name(), username)
 
+    def contains(self, username):
+        return self.db.hexists(self.name(), username)
+
     def delete(self, username):
         """
         根据键名删除键值对

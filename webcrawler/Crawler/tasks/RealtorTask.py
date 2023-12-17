@@ -30,7 +30,7 @@ class RealtorSpiderTaskByZipcode(SpiderHandler):
             for model in model_list:
                 if not check_property_update(model):
                     continue
-                upsert_property(model)
+                upsert_property(model, 'realtor_zipcode')
 
     def run(self):
         self.getByZipcode()
@@ -48,7 +48,7 @@ class RealtorSpiderTaskByCity(SpiderHandler):
             for model in model_list:
                 if not check_property_update(model):
                     continue
-                upsert_property(model)
+                upsert_property(model, 'realtor_city')
 
 
 class RealtorSpiderTask(SpiderTask):

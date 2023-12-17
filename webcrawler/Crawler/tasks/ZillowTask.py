@@ -77,7 +77,7 @@ class ZillowSpiderTaskByZipcode(SpiderHandler):
                 propertyObj = transferToPropertyInfo(model)
                 if not check_property_update(propertyObj):
                     continue
-                upsert_property(propertyObj)
+                upsert_property(propertyObj, 'zillow_zipcode')
 
 
 class ZillowSpiderTaskByCity(SpiderHandler):
@@ -93,7 +93,7 @@ class ZillowSpiderTaskByCity(SpiderHandler):
                 propertyObj = transferToPropertyInfo(model)
                 if not check_property_update(propertyObj):
                     continue
-                upsert_property(propertyObj)
+                upsert_property(propertyObj, 'zillow_city')
 
 
 class ZillowSpiderTask(SpiderTask):
